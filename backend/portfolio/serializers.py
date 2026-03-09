@@ -6,7 +6,16 @@ from .models import Portfolio, PortfolioStock, Stock
 class StockSerializer(serializers.ModelSerializer):
     class Meta:
         model = Stock
-        fields = ["id", "symbol", "company_name", "sector", "price", "pe_ratio"]
+        fields = [
+            "id",
+            "symbol",
+            "company_name",
+            "sector",
+            "price",
+            "pe_ratio",
+            "min_price",
+            "max_price",
+        ]
 
 
 class PortfolioStockSerializer(serializers.ModelSerializer):
@@ -54,11 +63,27 @@ class PortfolioSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Portfolio
-        fields = ["id", "user", "stocks", "total_value"]
-        read_only_fields = ["id", "user", "stocks", "total_value"]
+        fields = ["id", "name", "user", "stocks", "total_value"]
+        read_only_fields = ["id", "name", "user", "stocks", "total_value"]
 
     def get_total_value(self, obj):
         return obj.total_value()
+
+
+class PortfolioListSerializer(serializers.ModelSerializer):
+    total_value = serializers.SerializerMethodField()
+    stock_count = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Portfolio
+        fields = ["id", "name", "total_value", "stock_count"]
+        read_only_fields = ["id", "name", "total_value", "stock_count"]
+
+    def get_total_value(self, obj):
+        return obj.total_value()
+
+    def get_stock_count(self, obj):
+        return obj.portfolio_stocks.count()
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):

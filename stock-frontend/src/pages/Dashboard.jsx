@@ -1,218 +1,285 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import api from "../api/axios";
+import { Bar } from "react-chartjs-2";
+import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar";
+import SearchableSelect from "../components/SearchableSelect";
 import PortfolioTable from "../components/PortfolioTable";
-import AddStockForm from "../components/AddStockForm";
-import StockChart from "../components/StockChart";
-import PerformanceCharts from "../components/PerformanceCharts";
+import ChartCard from "../components/ChartCard";
+import { registerCharts } from "../charts/registerCharts";
+import api from "../api/axios";
+import { countries, dashboardSeedPortfolio } from "../data/mockData";
+
+registerCharts();
+const PORTFOLIO_STORAGE_KEY = "dashboard_portfolio_rows";
+const BUILDER_CONTEXT_KEY = "dashboard_builder_context";
+
+function getInitialPortfolioRows() {
+  try {
+    const raw = localStorage.getItem(PORTFOLIO_STORAGE_KEY);
+    if (!raw) return dashboardSeedPortfolio;
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return dashboardSeedPortfolio;
+    return parsed;
+  } catch {
+    return dashboardSeedPortfolio;
+  }
+}
+
+function getInitialBuilderContext() {
+  try {
+    const raw = localStorage.getItem(BUILDER_CONTEXT_KEY);
+    if (!raw) return { country: "", sector: "", sectorOptions: [], liveStocks: [] };
+    const parsed = JSON.parse(raw);
+    return {
+      country: parsed?.country || "",
+      sector: parsed?.sector || "",
+      sectorOptions: Array.isArray(parsed?.sectorOptions) ? parsed.sectorOptions : [],
+      liveStocks: Array.isArray(parsed?.liveStocks) ? parsed.liveStocks : [],
+    };
+  } catch {
+    return { country: "", sector: "", sectorOptions: [], liveStocks: [] };
+  }
+}
 
 export default function Dashboard() {
-  const navigate = useNavigate();
-  const [stocks, setStocks] = useState([]);
-  const [sectors, setSectors] = useState([]);
-  const [selectedSector, setSelectedSector] = useState("Technology");
-  const [sectorStockCache, setSectorStockCache] = useState({});
-  const [portfolio, setPortfolio] = useState([]);
-  const [totalValue, setTotalValue] = useState(0);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
+  const initialContext = getInitialBuilderContext();
+  const [country, setCountry] = useState(initialContext.country);
+  const [sector, setSector] = useState(initialContext.sector);
+  const [stockSymbol, setStockSymbol] = useState("");
+  const [quantity, setQuantity] = useState("1");
+  const [sectorOptions, setSectorOptions] = useState(initialContext.sectorOptions);
+  const [liveStocks, setLiveStocks] = useState(initialContext.liveStocks);
+  const [loadingStocks, setLoadingStocks] = useState(false);
+  const [stocksError, setStocksError] = useState("");
+  const [portfolioRows, setPortfolioRows] = useState(getInitialPortfolioRows);
 
-  const loadStocks = async (sector = selectedSector, force = false, applyToView = true) => {
-    if (!force && sectorStockCache[sector]) {
-      if (applyToView) {
-        setStocks(sectorStockCache[sector]);
-      }
-      return;
-    }
+  const currency = countries.find((item) => item.value === country)?.currency || "-";
 
-    const response = await api.get("/stocks/", { params: { sector } });
-    if (applyToView) {
-      setStocks(response.data);
-    }
-    setSectorStockCache((prev) => ({ ...prev, [sector]: response.data }));
-  };
+  const stockOptions = useMemo(
+    () =>
+      liveStocks.map((stock) => ({
+        value: stock.symbol,
+        label: `${stock.symbol} - ${stock.company_name || stock.symbol}`,
+      })),
+    [liveStocks]
+  );
 
   const loadSectors = async () => {
-    const response = await api.get("/sectors/");
-    const loadedSectors = response.data?.sectors || [];
-    setSectors(loadedSectors);
-    if (loadedSectors.length && !loadedSectors.includes(selectedSector)) {
-      setSelectedSector(loadedSectors[0]);
+    try {
+      const response = await api.get("/sectors/");
+      const loaded = (response.data?.sectors || []).map((name) => ({
+        value: name,
+        label: name,
+      }));
+      setSectorOptions(loaded);
+      if (!sector && loaded.length) {
+        setSector(loaded[0].value);
+      }
+    } catch {
+      setStocksError("Unable to load sectors.");
     }
   };
 
-  const loadPortfolio = async () => {
-    const [portfolioRes, totalRes] = await Promise.all([
-      api.get("/portfolio/"),
-      api.get("/portfolio/total/"),
-    ]);
-
-    setPortfolio(portfolioRes.data.stocks || []);
-    setTotalValue(totalRes.data.total_value || 0);
-  };
-
-  const loadData = async () => {
-    setError("");
-    setLoading(true);
+  const loadStocks = async (sectorName) => {
+    if (!sectorName) return;
+    setLoadingStocks(true);
     try {
-      await Promise.all([loadSectors(), loadStocks(selectedSector, true), loadPortfolio()]);
+      const response = await api.get("/stocks/", { params: { sector: sectorName } });
+      const rows = response.data || [];
+      setLiveStocks(rows);
+      setStocksError("");
+      setPortfolioRows((prev) =>
+        prev.map((row) => {
+          const live = rows.find((item) => item.symbol === row.symbol);
+          if (!live) return row;
+          return {
+            ...row,
+            currentPrice: Number(live.price ?? row.currentPrice),
+            peRatio: Number(live.pe_ratio ?? row.peRatio),
+            sector: row.sector || live.sector || sector || "Unknown",
+            country: row.country || country || "OTHER",
+          };
+        })
+      );
     } catch {
-      setError("Failed to load dashboard data.");
+      setStocksError("Unable to fetch live stocks for selected sector.");
     } finally {
-      setLoading(false);
+      setLoadingStocks(false);
     }
   };
 
   useEffect(() => {
-    loadData();
+    loadSectors();
   }, []);
 
   useEffect(() => {
-    if (!selectedSector) return;
-    loadStocks(selectedSector).catch(() => setError("Unable to load sector stocks."));
-  }, [selectedSector]);
+    if (!sector) return;
+    setStockSymbol("");
+    loadStocks(sector);
+  }, [sector]);
 
   useEffect(() => {
-    if (!sectors.length) return;
-    sectors
-      .filter((sector) => sector !== selectedSector && !sectorStockCache[sector])
-      .forEach((sector) => {
-        loadStocks(sector, true, false).catch(() => {});
-      });
-  }, [sectors]);
+    if (!sector) return;
+    const intervalId = setInterval(() => {
+      loadStocks(sector);
+    }, 60000);
+    return () => clearInterval(intervalId);
+  }, [sector]);
 
-  const handleAddStock = async (stockId, quantity) => {
-    setError("");
-    try {
-      await api.post("/portfolio/add/", { stock_id: stockId, quantity });
-      await loadPortfolio();
-    } catch {
-      setError("Unable to add stock.");
-    }
-  };
+  useEffect(() => {
+    localStorage.setItem(PORTFOLIO_STORAGE_KEY, JSON.stringify(portfolioRows));
+  }, [portfolioRows]);
 
-  const handleRemoveStock = async (stockId) => {
-    setError("");
-    try {
-      await api.delete("/portfolio/remove/", { data: { stock_id: stockId } });
-      await loadPortfolio();
-    } catch {
-      setError("Unable to remove stock.");
-    }
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
-    navigate("/login", { replace: true });
-  };
-
-  const summary = useMemo(() => {
-    const items = portfolio || [];
-    const totalProfitLoss = items.reduce(
-      (sum, item) => sum + Number(item.profit_loss || 0),
-      0
+  useEffect(() => {
+    localStorage.setItem(
+      BUILDER_CONTEXT_KEY,
+      JSON.stringify({ country, sector, sectorOptions, liveStocks })
     );
-    const peWeightedNumerator = items.reduce((sum, item) => {
-      const pe = Number(item.pe_ratio || 0);
-      const currentPrice = Number(item.current_price ?? item.stock?.price ?? 0);
-      const qty = Number(item.quantity || 0);
-      return sum + pe * currentPrice * qty;
-    }, 0);
-    const peWeightedDenominator = items.reduce((sum, item) => {
-      const currentPrice = Number(item.current_price ?? item.stock?.price ?? 0);
-      const qty = Number(item.quantity || 0);
-      return sum + currentPrice * qty;
-    }, 0);
-    const portfolioPeRatio =
-      peWeightedDenominator > 0 ? peWeightedNumerator / peWeightedDenominator : 0;
+  }, [country, sector, sectorOptions, liveStocks]);
 
-    const best = [...items].sort(
-      (a, b) => Number(b.profit_loss || 0) - Number(a.profit_loss || 0)
-    )[0];
+  const addStock = () => {
+    if (!stockSymbol) return;
+    const parsedQuantity = Number(quantity);
+    if (!Number.isFinite(parsedQuantity) || parsedQuantity <= 0) return;
+    const selected = liveStocks.find((item) => item.symbol === stockSymbol);
+    if (!selected) return;
+    const currentPrice = Number(selected.price || 0);
+    const maxPrice = Number(selected.max_price || currentPrice || 1);
+    const discountPct = maxPrice > 0 ? ((maxPrice - currentPrice) / maxPrice) * 100 : 0;
 
-    return {
-      totalProfitLoss,
-      portfolioPeRatio,
-      bestPerformer: best
-        ? `${best.stock.symbol} (${Number(best.profit_loss).toFixed(2)})`
-        : "N/A",
-    };
-  }, [portfolio]);
+    setPortfolioRows((prev) => {
+      if (prev.some((row) => row.symbol === selected.symbol)) return prev;
+      return [
+        ...prev,
+        {
+          symbol: selected.symbol,
+          company: selected.company_name || selected.symbol,
+          quantity: parsedQuantity,
+          buyPrice: currentPrice * 0.97,
+          currentPrice,
+          peRatio: Number(selected.pe_ratio || 0),
+          discountPct,
+          sector: selected.sector || sector || "Unknown",
+          country: country || "OTHER",
+        },
+      ];
+    });
+  };
+
+  const editRow = (symbol) => {
+    const raw = window.prompt("Enter updated quantity");
+    const nextQuantity = Number(raw);
+    if (!Number.isFinite(nextQuantity) || nextQuantity <= 0) return;
+    setPortfolioRows((prev) =>
+      prev.map((row) => (row.symbol === symbol ? { ...row, quantity: nextQuantity } : row))
+    );
+  };
+
+  const removeRow = (symbol) => {
+    setPortfolioRows((prev) => prev.filter((row) => row.symbol !== symbol));
+  };
+
+  const chartLabels = portfolioRows.map((row) => row.symbol);
+  const profitLossData = portfolioRows.map((row) => (row.currentPrice - row.buyPrice) * row.quantity);
+  const discountData = portfolioRows.map((row) => row.discountPct);
+  const opportunityData = portfolioRows.map((row) => row.currentPrice * row.quantity * (row.discountPct / 100));
+  const peData = portfolioRows.map((row) => row.peRatio);
+
+  const chartOptions = { responsive: true, maintainAspectRatio: false };
 
   return (
-    <div className="container dashboard-shell">
-      <div className="topbar dashboard-topbar">
-        <div>
-          <p className="eyebrow">Portfolio Workspace</p>
-          <h1>Stock Portfolio Dashboard</h1>
-        </div>
-        <button onClick={handleLogout}>Logout</button>
-      </div>
+    <div className="page">
+      <Navbar />
+      <div className="app-grid">
+        <Sidebar />
+        <main>
+          <div className="card">
+            <h2>Portfolio Builder Dashboard</h2>
+            <p className="muted-text">Selected Currency: {currency}</p>
+            <p className="muted-text">
+              {loadingStocks ? "Loading live stocks..." : `Live stocks in sector: ${liveStocks.length}`}
+            </p>
+            {stocksError && <p className="loss-text">{stocksError}</p>}
 
-      {error && <p className="error">{error}</p>}
-      {loading && <p className="loading-text">Loading portfolio data...</p>}
+            <div className="builder-grid dashboard-builder-grid">
+              <SearchableSelect
+                label="Country (Step 1)"
+                value={country}
+                options={countries.map((item) => ({ value: item.value, label: item.label }))}
+                onChange={setCountry}
+              />
+              <SearchableSelect
+                label="Sector (Step 2)"
+                value={sector}
+                options={sectorOptions}
+                onChange={setSector}
+              />
+              <SearchableSelect
+                label="Stock (Step 3)"
+                value={stockSymbol}
+                options={stockOptions}
+                onChange={setStockSymbol}
+                showSearch={false}
+              />
+            </div>
+            <div className="add-stock-footer">
+              <label>Quantity (Step 4)</label>
+              <input
+                type="number"
+                min="1"
+                step="1"
+                value={quantity}
+                onChange={(event) => setQuantity(event.target.value)}
+                placeholder="Enter quantity"
+              />
+              <label>Add Stock (Step 5)</label>
+              <button type="button" className="btn dashboard-add-btn" onClick={addStock}>
+                Add To Portfolio
+              </button>
+            </div>
+          </div>
 
-      <div className="card hero-card">
-        <div className="hero-card-content">
-          <p className="hero-label">Total Portfolio Value</p>
-          <h2>${Number(totalValue).toFixed(2)}</h2>
-          <p className="hero-subtext">Live pricing synced from market feed.</p>
-        </div>
-        <div className="hero-chip">Market Pulse</div>
-      </div>
+          <PortfolioTable rows={portfolioRows} onEdit={editRow} onRemove={removeRow} />
 
-      <div className="kpi-grid">
-        <div className="card kpi-card">
-          <p className="kpi-label">Best Performing Stock</p>
-          <h3>{summary.bestPerformer}</h3>
-        </div>
-        <div className="card kpi-card">
-          <p className="kpi-label">Profit / Loss</p>
-          <h3
-            className={
-              summary.totalProfitLoss >= 0 ? "profit-text kpi-value" : "loss-text kpi-value"
-            }
-          >
-            ${Number(summary.totalProfitLoss).toFixed(2)}
-          </h3>
-        </div>
-        <div className="card kpi-card">
-          <p className="kpi-label">Portfolio PE Ratio</p>
-          <h3>{summary.portfolioPeRatio ? summary.portfolioPeRatio.toFixed(2) : "N/A"}</h3>
-        </div>
-      </div>
-
-      <div className="card">
-        <h3>Add Stock</h3>
-        <div className="form-row" style={{ marginBottom: 12 }}>
-          <select
-            value={selectedSector}
-            onChange={(e) => setSelectedSector(e.target.value)}
-          >
-            {sectors.map((sector) => (
-              <option key={sector} value={sector}>
-                {sector}
-              </option>
-            ))}
-          </select>
-        </div>
-        <AddStockForm stocks={stocks} onAdd={handleAddStock} />
-      </div>
-
-      <div className="card">
-        <h3>Your Portfolio</h3>
-        <PortfolioTable portfolioItems={portfolio} onRemove={handleRemoveStock} />
-      </div>
-
-      <div className="card">
-        <h3>Stock Price Trend</h3>
-        <StockChart stocks={stocks} />
-      </div>
-
-      <div className="card">
-        <h3>Portfolio Analytics</h3>
-        <PerformanceCharts portfolioItems={portfolio} />
+          <div className="chart-grid">
+            <ChartCard title="Profit and Loss">
+              <Bar
+                data={{
+                  labels: chartLabels,
+                  datasets: [{ label: "Profit/Loss", data: profitLossData, backgroundColor: "#3b82f6" }],
+                }}
+                options={chartOptions}
+              />
+            </ChartCard>
+            <ChartCard title="Discount Percentage">
+              <Bar
+                data={{
+                  labels: chartLabels,
+                  datasets: [{ label: "Discount %", data: discountData, backgroundColor: "#22c55e" }],
+                }}
+                options={chartOptions}
+              />
+            </ChartCard>
+            <ChartCard title="Opportunity Value">
+              <Bar
+                data={{
+                  labels: chartLabels,
+                  datasets: [{ label: "Opportunity", data: opportunityData, backgroundColor: "#f59e0b" }],
+                }}
+                options={chartOptions}
+              />
+            </ChartCard>
+            <ChartCard title="P/E Ratio">
+              <Bar
+                data={{
+                  labels: chartLabels,
+                  datasets: [{ label: "P/E Ratio", data: peData, backgroundColor: "#a855f7" }],
+                }}
+                options={chartOptions}
+              />
+            </ChartCard>
+          </div>
+        </main>
       </div>
     </div>
   );

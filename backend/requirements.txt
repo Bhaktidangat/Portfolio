@@ -3,3 +3,6 @@ djangorestframework==3.15.2
 djangorestframework-simplejwt==5.3.1
 django-cors-headers==4.4.0
 yfinance==0.2.54
+pandas==2.2.3
+scikit-learn==1.6.1
+statsmodels==0.14.4

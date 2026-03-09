@@ -1,94 +1,60 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../api/axios";
 
 export default function Login() {
-  const navigate = useNavigate();
-  const [mode, setMode] = useState("login");
+  const [isSignupMode, setIsSignupMode] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
-
-    try {
-      if (mode === "signup") {
-        await api.post("/register/", { username, password });
-      }
-
-      const response = await api.post("/token/", { username, password });
-
-      localStorage.setItem("access_token", response.data.access);
-      localStorage.setItem("refresh_token", response.data.refresh);
-      navigate("/dashboard", { replace: true });
-    } catch {
-      setError(
-        mode === "signup"
-          ? "Signup failed. Username may already exist or password is too short."
-          : "Invalid credentials. Please try again."
-      );
-    } finally {
-      setLoading(false);
-    }
+  const submit = (event) => {
+    event.preventDefault();
+    if (!username.trim() || !password.trim()) return;
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    localStorage.setItem("use_jwt_auth", "false");
+    localStorage.setItem("portfolio_user", "true");
+    navigate("/home", { replace: true });
   };
 
   return (
-    <div className="login-wrap">
-      <div className="card login-card">
-        <h2>{mode === "login" ? "Login" : "Sign Up"}</h2>
+    <div className="auth-page">
+      <form className="auth-card card" onSubmit={submit}>
+        <h2>{isSignupMode ? "Sign Up" : "Login"}</h2>
         <div className="auth-toggle">
           <button
             type="button"
-            className={mode === "login" ? "active" : ""}
-            onClick={() => setMode("login")}
+            className={!isSignupMode ? "active" : ""}
+            onClick={() => setIsSignupMode(false)}
           >
             Login
           </button>
           <button
             type="button"
-            className={mode === "signup" ? "active" : ""}
-            onClick={() => setMode("signup")}
+            className={isSignupMode ? "active" : ""}
+            onClick={() => setIsSignupMode(true)}
           >
             Sign Up
           </button>
         </div>
-        <form onSubmit={onSubmit}>
-          <div className="form-row" style={{ marginBottom: 10 }}>
-            <input
-              type="text"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-              style={{ width: "100%" }}
-            />
-          </div>
-          <div className="form-row" style={{ marginBottom: 10 }}>
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              style={{ width: "100%" }}
-            />
-          </div>
-          {error && <p className="error">{error}</p>}
-          <button type="submit" disabled={loading}>
-            {loading
-              ? mode === "login"
-                ? "Signing in..."
-                : "Creating account..."
-              : mode === "login"
-                ? "Login"
-                : "Sign Up"}
-          </button>
-        </form>
-      </div>
+
+        <label>Username</label>
+        <input value={username} onChange={(e) => setUsername(e.target.value)} />
+
+        <label>Password</label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <button className="btn" type="submit">
+          {isSignupMode ? "Create Account" : "Login"}
+        </button>
+        <a href="#" className="helper-link">
+          Forgot password?
+        </a>
+      </form>
     </div>
   );
 }

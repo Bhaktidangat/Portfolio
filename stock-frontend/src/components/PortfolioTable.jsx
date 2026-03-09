@@ -1,55 +1,56 @@
-export default function PortfolioTable({ portfolioItems, onRemove }) {
-  if (!portfolioItems.length) {
-    return <p>No stocks in portfolio yet.</p>;
-  }
-
+export default function PortfolioTable({ rows, onEdit, onRemove }) {
   return (
-    <div className="table-wrap">
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Symbol</th>
-            <th>Company</th>
-            <th>Quantity</th>
-            <th>Buy Price</th>
-            <th>Current Price</th>
-            <th>PE Ratio</th>
-            <th>Discount</th>
-            <th>Profit/Loss</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {portfolioItems.map((item) => (
-            <tr key={item.id}>
-              <td>{item.stock.symbol}</td>
-              <td>{item.stock.company_name}</td>
-              <td>{item.quantity}</td>
-              <td>${Number(item.buy_price).toFixed(2)}</td>
-              <td>${Number(item.current_price ?? item.stock.price).toFixed(2)}</td>
-              <td>{item.pe_ratio ? Number(item.pe_ratio).toFixed(2) : "N/A"}</td>
-              <td
-                className={Number(item.discount) >= 0 ? "profit-text" : "loss-text"}
-              >
-                {Number(item.discount).toFixed(2)}%
-              </td>
-              <td
-                className={Number(item.profit_loss) >= 0 ? "profit-text" : "loss-text"}
-              >
-                ${Number(item.profit_loss).toFixed(2)}
-              </td>
-              <td>
-                <button
-                  className="button-danger"
-                  onClick={() => onRemove(item.stock.id)}
-                >
-                  Remove
-                </button>
-              </td>
+    <div className="card">
+      <h3>Portfolio Table</h3>
+      <div className="table-wrap">
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th>Company</th>
+              <th>Quantity</th>
+              <th>Buy Price</th>
+              <th>Current Price</th>
+              <th>P/E Ratio</th>
+              <th>Discount %</th>
+              <th>Profit/Loss</th>
+              <th>Position Value</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {rows.map((row) => {
+              const profitLoss = (row.currentPrice - row.buyPrice) * row.quantity;
+              const positionValue = row.currentPrice * row.quantity;
+              return (
+                <tr key={row.symbol}>
+                  <td>{row.symbol}</td>
+                  <td>{row.company}</td>
+                  <td>{row.quantity}</td>
+                  <td>{row.buyPrice.toFixed(2)}</td>
+                  <td>{row.currentPrice.toFixed(2)}</td>
+                  <td>{row.peRatio.toFixed(2)}</td>
+                  <td>{row.discountPct.toFixed(2)}%</td>
+                  <td className={profitLoss >= 0 ? "profit-text" : "loss-text"}>
+                    {profitLoss.toFixed(2)}
+                  </td>
+                  <td>{positionValue.toFixed(2)}</td>
+                  <td>
+                    <div className="action-group">
+                      <button type="button" className="btn btn-muted" onClick={() => onEdit(row.symbol)}>
+                        Edit
+                      </button>
+                      <button type="button" className="btn btn-danger" onClick={() => onRemove(row.symbol)}>
+                        Remove
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

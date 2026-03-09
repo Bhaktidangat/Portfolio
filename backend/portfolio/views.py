@@ -2,9 +2,25 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from .analytics.gold_silver_correlation import get_gold_silver_rolling_correlation
+from .analytics.gold_silver_data import fetch_gold_silver_prices
+from .analytics.gold_silver_prediction import get_gold_silver_prediction
 from .models import Portfolio, PortfolioStock, Stock
-from .serializers import PortfolioSerializer, StockSerializer, UserRegisterSerializer
-from .services import SECTOR_SYMBOLS, get_symbols_for_sector, sync_stocks_from_yfinance
+from .serializers import (
+    PortfolioListSerializer,
+    PortfolioSerializer,
+    StockSerializer,
+    UserRegisterSerializer,
+)
+from .services import (
+    SECTOR_SYMBOLS,
+    get_assets_compare_analysis,
+    get_bitcoin_prediction_analysis,
+    get_bulk_stock_direction_forecasts,
+    get_gold_silver_prediction_analysis,
+    get_symbols_for_sector,
+    sync_stocks_from_yfinance,
+)
 
 
 class RegisterView(generics.CreateAPIView):
@@ -53,19 +69,117 @@ class SectorListView(APIView):
         return Response({"sectors": list(SECTOR_SYMBOLS.keys())})
 
 
+class StockForecastView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        symbols_param = request.query_params.get("symbols", "")
+        symbols = [s.strip().upper() for s in symbols_param.split(",") if s.strip()]
+        if not symbols:
+            return Response({"forecasts": {}})
+        forecasts = get_bulk_stock_direction_forecasts(symbols)
+        return Response({"forecasts": forecasts})
+
+
+def _get_or_create_default_portfolio(user):
+    portfolio = Portfolio.objects.filter(user=user).order_by("id").first()
+    if portfolio:
+        return portfolio
+    return Portfolio.objects.create(user=user, name="My Portfolio")
+
+
+def _get_requested_portfolio(request, source="query"):
+    raw_portfolio_id = (
+        request.query_params.get("portfolio_id")
+        if source == "query"
+        else request.data.get("portfolio_id")
+    )
+    queryset = Portfolio.objects.filter(user=request.user).order_by("id")
+
+    if raw_portfolio_id in (None, ""):
+        return _get_or_create_default_portfolio(request.user), None
+
+    try:
+        portfolio_id = int(raw_portfolio_id)
+    except (TypeError, ValueError):
+        return None, Response(
+            {"detail": "portfolio_id must be an integer."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    portfolio = queryset.filter(id=portfolio_id).first()
+    if not portfolio:
+        return None, Response(
+            {"detail": "Portfolio not found."},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+    return portfolio, None
+
+
+class PortfolioListCreateView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        portfolios = Portfolio.objects.filter(user=request.user).order_by("id")
+        if not portfolios.exists():
+            _get_or_create_default_portfolio(request.user)
+            portfolios = Portfolio.objects.filter(user=request.user).order_by("id")
+        serializer = PortfolioListSerializer(portfolios, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        name = (request.data.get("name") or "").strip()
+        if not name:
+            return Response(
+                {"detail": "Portfolio name is required."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        if Portfolio.objects.filter(user=request.user, name__iexact=name).exists():
+            return Response(
+                {"detail": "A portfolio with this name already exists."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        portfolio = Portfolio.objects.create(user=request.user, name=name)
+        serializer = PortfolioListSerializer(portfolio)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
 class PortfolioView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        portfolio, _ = Portfolio.objects.get_or_create(user=request.user)
+        portfolio, error_response = _get_requested_portfolio(request, source="query")
+        if error_response:
+            return error_response
+        symbols = list(
+            portfolio.portfolio_stocks.select_related("stock").values_list(
+                "stock__symbol", flat=True
+            )
+        )
+        if symbols:
+            sync_stocks_from_yfinance(symbols, force=True)
         serializer = PortfolioSerializer(portfolio)
-        return Response(serializer.data)
+        payload = serializer.data
+        forecast_map = get_bulk_stock_direction_forecasts(symbols)
+        for stock_row in payload.get("stocks", []):
+            symbol = (stock_row.get("stock") or {}).get("symbol", "").upper()
+            forecast = forecast_map.get(symbol, {})
+            stock_row["future_trend"] = forecast.get("future_trend", "DOWN")
+            stock_row["predicted_price"] = forecast.get("predicted_price")
+            stock_row["trend_delta_percent"] = forecast.get("delta_percent")
+        return Response(payload)
 
 
 class PortfolioAddStockView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
+        portfolio, error_response = _get_requested_portfolio(request, source="body")
+        if error_response:
+            return error_response
+
         stock_id = request.data.get("stock_id")
         quantity = request.data.get("quantity")
         buy_price = request.data.get("buy_price")
@@ -106,7 +220,6 @@ class PortfolioAddStockView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        portfolio, _ = Portfolio.objects.get_or_create(user=request.user)
         portfolio_stock, created = PortfolioStock.objects.get_or_create(
             portfolio=portfolio,
             stock=stock,
@@ -123,6 +236,14 @@ class PortfolioAddStockView(APIView):
             portfolio_stock.buy_price = weighted_buy_price
             portfolio_stock.save()
 
+        symbols = list(
+            portfolio.portfolio_stocks.select_related("stock").values_list(
+                "stock__symbol", flat=True
+            )
+        )
+        if symbols:
+            sync_stocks_from_yfinance(symbols, force=True)
+
         serializer = PortfolioSerializer(portfolio)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -131,6 +252,10 @@ class PortfolioRemoveStockView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def delete(self, request):
+        portfolio, error_response = _get_requested_portfolio(request, source="body")
+        if error_response:
+            return error_response
+
         stock_id = request.data.get("stock_id")
         if stock_id is None:
             return Response(
@@ -138,7 +263,6 @@ class PortfolioRemoveStockView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        portfolio, _ = Portfolio.objects.get_or_create(user=request.user)
         deleted_count, _ = PortfolioStock.objects.filter(
             portfolio=portfolio, stock_id=stock_id
         ).delete()
@@ -152,9 +276,119 @@ class PortfolioRemoveStockView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+class PortfolioUpdateBuyPriceView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def patch(self, request):
+        portfolio, error_response = _get_requested_portfolio(request, source="body")
+        if error_response:
+            return error_response
+
+        stock_id = request.data.get("stock_id")
+        buy_price = request.data.get("buy_price")
+
+        if stock_id is None or buy_price is None:
+            return Response(
+                {"detail": "stock_id and buy_price are required."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            buy_price = float(buy_price)
+            if buy_price <= 0:
+                raise ValueError
+        except ValueError:
+            return Response(
+                {"detail": "buy_price must be a positive number."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        portfolio_stock = PortfolioStock.objects.filter(
+            portfolio=portfolio, stock_id=stock_id
+        ).first()
+        if not portfolio_stock:
+            return Response(
+                {"detail": "Stock not found in portfolio."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        portfolio_stock.buy_price = buy_price
+        portfolio_stock.save(update_fields=["buy_price"])
+
+        serializer = PortfolioSerializer(portfolio)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 class PortfolioTotalView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        portfolio, _ = Portfolio.objects.get_or_create(user=request.user)
+        portfolio, error_response = _get_requested_portfolio(request, source="query")
+        if error_response:
+            return error_response
         return Response({"total_value": portfolio.total_value()})
+
+
+class GoldSilverAnalysisView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        result = get_gold_silver_prediction_analysis(period="2y")
+        return Response(
+            {
+                "correlation": result["correlation"],
+                "data": result["rows"],
+                "predictions": result["predictions"],
+                "count": len(result["rows"]),
+            }
+        )
+
+
+class GoldSilverTrendView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        result = fetch_gold_silver_prices(period="3y", interval="1d")
+        return Response(
+            {
+                "dates": result.dates,
+                "gold_prices": result.gold_prices,
+                "silver_prices": result.silver_prices,
+            }
+        )
+
+
+class GoldSilverCorrelationView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        return Response(get_gold_silver_rolling_correlation(window=30, period="3y"))
+
+
+class GoldSilverPredictionView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        return Response(get_gold_silver_prediction(days=7, period="2y"))
+
+
+class BitcoinAnalysisView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        result = get_bitcoin_prediction_analysis(period="2y")
+        return Response(
+            {
+                "data": result.get("rows", []),
+                "prediction": result.get("prediction", {}),
+                "count": len(result.get("rows", [])),
+            }
+        )
+
+
+class CompareAnalysisView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        result = get_assets_compare_analysis(period="2y")
+        return Response(result)
