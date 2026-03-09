@@ -6,6 +6,7 @@ import Sidebar from "../components/Sidebar";
 import ChartCard from "../components/ChartCard";
 import StatCard from "../components/StatCard";
 import { registerCharts } from "../charts/registerCharts";
+import { forecastAreaPlugin, getForecastChartOptions } from "../charts/forecastTheme";
 
 registerCharts();
 
@@ -275,81 +276,105 @@ export default function GoldSilver() {
             />
           </ChartCard>
 
-          <ChartCard title="Gold Price Prediction (LR vs ARIMA, Next 7 Days)">
+          <ChartCard
+            title="Gold Price Prediction (LR vs ARIMA, Next 7 Days)"
+            className="forecast-card"
+            kicker="Future Prediction Graph"
+          >
             <Line
+              plugins={[forecastAreaPlugin]}
               data={{
                 labels: predictionFocus.dates,
                 datasets: [
                   {
                     label: "Actual Price",
                     data: predictionFocus.gold_actual,
-                    borderColor: "#d97706",
-                    tension: 0.15,
-                    pointRadius: 0,
-                    borderWidth: 2,
+                    borderColor: "#38bdf8",
+                    backgroundColor: "rgba(56, 189, 248, 0.22)",
+                    fill: true,
+                    tension: 0.22,
+                    pointRadius: 1.8,
+                    pointHoverRadius: 3.5,
+                    borderWidth: 2.4,
                   },
                   {
                     label: "Linear Regression Prediction",
                     data: goldLrConnected,
-                    borderColor: "#2563eb",
-                    borderDash: [2, 6],
-                    tension: 0.15,
+                    borderColor: "#22c55e",
+                    pointBackgroundColor: "#4ade80",
+                    pointBorderColor: "#0b203e",
+                    borderDash: [4, 6],
+                    tension: 0.18,
                     pointRadius: 3,
-                    borderWidth: 3,
+                    borderWidth: 2.6,
                     spanGaps: true,
                   },
                   {
                     label: "ARIMA Prediction",
                     data: goldArimaConnected,
-                    borderColor: "#16a34a",
-                    borderDash: [2, 6],
-                    tension: 0.15,
+                    borderColor: "#f97316",
+                    pointBackgroundColor: "#fb923c",
+                    pointBorderColor: "#0b203e",
+                    borderDash: [4, 6],
+                    tension: 0.18,
                     pointRadius: 3,
-                    borderWidth: 3,
+                    borderWidth: 2.6,
                     spanGaps: true,
                   },
                 ],
               }}
-              options={predictionChartOptions}
+              options={getForecastChartOptions({ maxTicksLimit: 12 })}
             />
           </ChartCard>
 
-          <ChartCard title="Silver Price Prediction (LR vs ARIMA, Next 7 Days)">
+          <ChartCard
+            title="Silver Price Prediction (LR vs ARIMA, Next 7 Days)"
+            className="forecast-card"
+            kicker="Future Prediction Graph"
+          >
             <Line
+              plugins={[forecastAreaPlugin]}
               data={{
                 labels: predictionFocus.dates,
                 datasets: [
                   {
                     label: "Actual Price",
                     data: predictionFocus.silver_actual,
-                    borderColor: "#64748b",
-                    tension: 0.15,
-                    pointRadius: 0,
-                    borderWidth: 2,
+                    borderColor: "#38bdf8",
+                    backgroundColor: "rgba(56, 189, 248, 0.22)",
+                    fill: true,
+                    tension: 0.22,
+                    pointRadius: 1.8,
+                    pointHoverRadius: 3.5,
+                    borderWidth: 2.4,
                   },
                   {
                     label: "Linear Regression Prediction",
                     data: silverLrConnected,
-                    borderColor: "#2563eb",
-                    borderDash: [2, 6],
-                    tension: 0.15,
+                    borderColor: "#22c55e",
+                    pointBackgroundColor: "#4ade80",
+                    pointBorderColor: "#0b203e",
+                    borderDash: [4, 6],
+                    tension: 0.18,
                     pointRadius: 3,
-                    borderWidth: 3,
+                    borderWidth: 2.6,
                     spanGaps: true,
                   },
                   {
                     label: "ARIMA Prediction",
                     data: silverArimaConnected,
-                    borderColor: "#16a34a",
-                    borderDash: [2, 6],
-                    tension: 0.15,
+                    borderColor: "#f97316",
+                    pointBackgroundColor: "#fb923c",
+                    pointBorderColor: "#0b203e",
+                    borderDash: [4, 6],
+                    tension: 0.18,
                     pointRadius: 3,
-                    borderWidth: 3,
+                    borderWidth: 2.6,
                     spanGaps: true,
                   },
                 ],
               }}
-              options={chartOptions}
+              options={getForecastChartOptions({ maxTicksLimit: 12 })}
             />
           </ChartCard>
         </main>

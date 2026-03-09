@@ -5,6 +5,7 @@ import Sidebar from "../components/Sidebar";
 import ChartCard from "../components/ChartCard";
 import StatCard from "../components/StatCard";
 import { registerCharts } from "../charts/registerCharts";
+import { forecastAreaPlugin, getForecastChartOptions } from "../charts/forecastTheme";
 import api from "../api/axios";
 
 registerCharts();
@@ -83,31 +84,40 @@ export default function Bitcoin() {
             />
           </div>
 
-          <ChartCard title="BTC-USD Historical + ARIMA Forecast">
+          <ChartCard
+            title="BTC-USD Historical + ARIMA Forecast"
+            className="forecast-card"
+            kicker="Future Prediction Graph"
+          >
             <Line
+              plugins={[forecastAreaPlugin]}
               data={{
                 labels,
                 datasets: [
                   {
                     label: "Historical BTC-USD",
                     data: historicalSeries,
-                    borderColor: "#60a5fa",
-                    backgroundColor: "rgba(96, 165, 250, 0.18)",
-                    fill: false,
-                    tension: 0.25,
+                    borderColor: "#38bdf8",
+                    backgroundColor: "rgba(56, 189, 248, 0.24)",
+                    pointBackgroundColor: "#7dd3fc",
+                    pointBorderColor: "#0b203e",
+                    fill: true,
+                    tension: 0.3,
                   },
                   {
                     label: "Forecasted BTC-USD",
                     data: forecastSeries,
                     borderColor: "#f97316",
-                    borderDash: [6, 5],
+                    pointBackgroundColor: "#fb923c",
+                    pointBorderColor: "#0b203e",
+                    borderDash: [4, 6],
                     fill: false,
-                    tension: 0.25,
+                    tension: 0.3,
                     spanGaps: true,
                   },
                 ],
               }}
-              options={{ responsive: true, maintainAspectRatio: false }}
+              options={getForecastChartOptions({ maxTicksLimit: 14 })}
             />
           </ChartCard>
 

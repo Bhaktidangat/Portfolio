@@ -5,6 +5,7 @@ import Sidebar from "../components/Sidebar";
 import ChartCard from "../components/ChartCard";
 import SearchableSelect from "../components/SearchableSelect";
 import { registerCharts } from "../charts/registerCharts";
+import { forecastAreaPlugin, getForecastChartOptions } from "../charts/forecastTheme";
 import api from "../api/axios";
 import { dashboardSeedPortfolio } from "../data/mockData";
 
@@ -183,8 +184,11 @@ export default function MLAnalysis() {
             {forecastLoading ? <p className="muted-text">Loading forecast...</p> : null}
             <ChartCard
               title={selectedSymbol ? `${forecast.company_name || selectedSymbol} - 7 Day Forecast` : "Forecast"}
+              className="forecast-card"
+              kicker="Future Prediction Graph"
             >
               <Line
+                plugins={[forecastAreaPlugin]}
                 data={{
                   labels: chartLabels,
                   datasets: [
@@ -192,22 +196,26 @@ export default function MLAnalysis() {
                       label: "Historical",
                       data: historySeries,
                       borderColor: "#38bdf8",
-                      backgroundColor: "rgba(56, 189, 248, 0.2)",
-                      fill: false,
-                      tension: 0.25,
+                      backgroundColor: "rgba(56, 189, 248, 0.24)",
+                      pointBackgroundColor: "#7dd3fc",
+                      pointBorderColor: "#0b203e",
+                      fill: true,
+                      tension: 0.3,
                     },
                     {
                       label: "Predicted Next 7 Days",
                       data: predictionSeries,
-                      borderColor: "#f59e0b",
-                      borderDash: [6, 5],
+                      borderColor: "#a78bfa",
+                      pointBackgroundColor: "#c4b5fd",
+                      pointBorderColor: "#0b203e",
+                      borderDash: [4, 6],
                       fill: false,
-                      tension: 0.25,
+                      tension: 0.3,
                       spanGaps: true,
                     },
                   ],
                 }}
-                options={{ responsive: true, maintainAspectRatio: false }}
+                options={getForecastChartOptions({ maxTicksLimit: 14 })}
               />
             </ChartCard>
           </div>

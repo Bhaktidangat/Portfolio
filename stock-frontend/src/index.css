@@ -374,8 +374,42 @@ button {
   margin-top: 0;
 }
 
+.chart-kicker {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #6d7f9f;
+}
+
 .chart-container {
   height: 250px;
+}
+
+.forecast-card {
+  background:
+    radial-gradient(circle at 20% 6%, rgba(26, 105, 191, 0.24), transparent 42%),
+    linear-gradient(165deg, #07112a 0%, #061129 45%, #081737 100%);
+  border: 1px solid rgba(101, 140, 196, 0.35);
+  box-shadow: 0 16px 38px -24px rgba(3, 10, 31, 0.8);
+}
+
+.forecast-card h3 {
+  color: #ecf5ff;
+}
+
+.forecast-card .chart-kicker {
+  color: #7ea1d3;
+}
+
+.forecast-card .chart-container {
+  background:
+    linear-gradient(180deg, rgba(8, 21, 45, 0.8) 0%, rgba(4, 12, 29, 0.6) 100%);
+  border: 1px solid rgba(107, 146, 205, 0.22);
+  border-radius: 14px;
+  padding: 10px;
+  height: 280px;
 }
 
 .stats-grid {
@@ -533,4 +567,150 @@ button {
   .chart-container {
     height: 230px;
   }
+
+  .forecast-card .chart-container {
+    height: 240px;
+  }
+}
+
+/* Dark Theme Overrides */
+:root {
+  --bg: #050a16;
+  --bg-accent: #0a1730;
+  --panel: #0d1628;
+  --panel-soft: #121e34;
+  --text: #e6eeff;
+  --muted: #9caed0;
+  --border: #253655;
+  --primary: #38bdf8;
+  --primary-strong: #0ea5e9;
+  --danger: #f87171;
+  --success: #22c55e;
+  --shadow: 0 20px 48px -28px rgba(0, 0, 0, 0.88);
+}
+
+body {
+  background:
+    radial-gradient(circle at 20% -10%, rgba(34, 197, 94, 0.1), transparent 34%),
+    radial-gradient(circle at 85% -20%, rgba(56, 189, 248, 0.13), transparent 36%),
+    linear-gradient(165deg, #040911 0%, #071327 58%, #091935 100%);
+}
+
+.navbar {
+  border-bottom: 1px solid rgba(67, 91, 132, 0.55);
+  background: rgba(7, 14, 28, 0.82);
+}
+
+.brand-kicker {
+  color: #8ea6cc;
+}
+
+.nav-link {
+  border-color: rgba(69, 96, 141, 0.5);
+  color: #bcd0ef;
+  background: rgba(10, 21, 40, 0.35);
+}
+
+.nav-link:hover {
+  border-color: #70a7e8;
+  background: rgba(34, 87, 161, 0.28);
+}
+
+.nav-link.active {
+  background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+}
+
+.card {
+  background: linear-gradient(180deg, rgba(14, 24, 44, 0.94) 0%, rgba(11, 20, 38, 0.96) 100%);
+  border: 1px solid rgba(65, 93, 137, 0.5);
+}
+
+.sidebar-link {
+  border-color: rgba(63, 90, 132, 0.5);
+  color: #b6caea;
+  background: rgba(12, 21, 39, 0.3);
+}
+
+.sidebar-link:hover {
+  color: #e2efff;
+  border-color: #68a0df;
+  background: rgba(33, 76, 146, 0.26);
+}
+
+.sidebar-link.active {
+  background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
+}
+
+label {
+  color: #8ea6cc;
+}
+
+input,
+select,
+button {
+  background: #0f1b31;
+  color: var(--text);
+  border: 1px solid rgba(66, 94, 136, 0.75);
+}
+
+input::placeholder {
+  color: #8195b8;
+}
+
+input:focus,
+select:focus,
+button:focus-visible {
+  outline: 2px solid rgba(56, 189, 248, 0.4);
+}
+
+.btn {
+  background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
+}
+
+.btn-muted {
+  background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+}
+
+.table th,
+.table td {
+  border-bottom: 1px solid rgba(62, 86, 125, 0.55);
+}
+
+.table th {
+  color: #c5d8f5;
+}
+
+.table tbody tr:nth-child(odd) {
+  background: rgba(21, 35, 63, 0.55);
+}
+
+.stat-card {
+  background: linear-gradient(135deg, rgba(15, 31, 57, 0.92) 0%, rgba(12, 26, 49, 0.92) 100%);
+  border: 1px solid rgba(63, 89, 130, 0.6);
+}
+
+.stat-card p {
+  color: #9eb3d4;
+}
+
+.loss-text {
+  color: #f87171;
+}
+
+.auth-page {
+  background:
+    radial-gradient(circle at 20% 0%, rgba(56, 189, 248, 0.16), transparent 40%),
+    linear-gradient(180deg, #050d1c 0%, #071327 100%);
+}
+
+.auth-toggle button.active {
+  background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
+}
+
+.helper-link {
+  color: #8facd8;
+}
+
+.helper-link:hover {
+  color: #d2e5ff;
 }

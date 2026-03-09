@@ -5,6 +5,7 @@ import Sidebar from "../components/Sidebar";
 import ChartCard from "../components/ChartCard";
 import StatCard from "../components/StatCard";
 import { registerCharts } from "../charts/registerCharts";
+import { forecastAreaPlugin, getForecastChartOptions } from "../charts/forecastTheme";
 import api from "../api/axios";
 import { dashboardSeedPortfolio } from "../data/mockData";
 
@@ -205,38 +206,40 @@ export default function Growth() {
             />
           </ChartCard>
 
-          <ChartCard title="7-Day Linear Regression Forecast">
+          <ChartCard
+            title="7-Day Linear Regression Forecast"
+            className="forecast-card"
+            kicker="Forecast Graph"
+          >
             <Line
+              plugins={[forecastAreaPlugin]}
               data={{
                 labels: combinedLabels,
                 datasets: [
                   {
                     label: "Historical Portfolio Value",
                     data: historicalSeries,
-                    borderColor: "#60a5fa",
-                    backgroundColor: "rgba(96,165,250,0.18)",
+                    borderColor: "#38bdf8",
+                    backgroundColor: "rgba(56, 189, 248, 0.24)",
+                    pointBackgroundColor: "#73d7ff",
+                    pointBorderColor: "#0b203e",
                     tension: 0.35,
-                    fill: false,
+                    fill: true,
                   },
                   {
                     label: "Predicted Next 7 Days",
                     data: forecastSeries,
-                    borderColor: "#f59e0b",
-                    backgroundColor: "rgba(245,158,11,0.14)",
-                    borderDash: [6, 5],
+                    borderColor: "#a78bfa",
+                    pointBackgroundColor: "#c4b5fd",
+                    pointBorderColor: "#0b203e",
+                    borderDash: [4, 6],
                     tension: 0.35,
                     fill: false,
                     spanGaps: true,
                   },
                 ],
               }}
-              options={{
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                  legend: { position: "top" },
-                },
-              }}
+              options={getForecastChartOptions({ maxTicksLimit: 14 })}
             />
           </ChartCard>
         </main>

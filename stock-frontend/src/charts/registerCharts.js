@@ -29,5 +29,12 @@ export function registerCharts() {
     Legend,
     Filler
   );
+
+  ChartJS.defaults.color = "#c7d3ea";
+  ChartJS.defaults.borderColor = "rgba(125, 151, 198, 0.22)";
+  ChartJS.defaults.plugins.legend.labels.color = "#d7e2f7";
+  ChartJS.defaults.plugins.tooltip.backgroundColor = "rgba(9, 16, 31, 0.95)";
+  ChartJS.defaults.plugins.tooltip.titleColor = "#eef4ff";
+  ChartJS.defaults.plugins.tooltip.bodyColor = "#d7e2f7";
   registered = true;
 }
