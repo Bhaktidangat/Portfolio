@@ -13,13 +13,23 @@ registerCharts();
 const PORTFOLIO_STORAGE_KEY = "dashboard_portfolio_rows";
 const BUILDER_CONTEXT_KEY = "dashboard_builder_context";
 
+function normalizeCompanyName(row, fallbackSymbol = "") {
+  const symbol = String(fallbackSymbol || row?.symbol || "").trim().toUpperCase();
+  const fromRow = String(row?.company || row?.company_name || "").trim();
+  if (fromRow) return fromRow;
+  return symbol || "Unknown";
+}
+
 function getInitialPortfolioRows() {
   try {
     const raw = localStorage.getItem(PORTFOLIO_STORAGE_KEY);
     if (!raw) return dashboardSeedPortfolio;
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) return dashboardSeedPortfolio;
-    return parsed;
+    return parsed.map((row) => ({
+      ...row,
+      company: normalizeCompanyName(row, row?.symbol),
+    }));
   } catch {
     return dashboardSeedPortfolio;
   }
@@ -80,11 +90,13 @@ export default function Dashboard() {
     }
   };
 
-  const loadStocks = async (sectorName) => {
+  const loadStocks = async (sectorName, countryCode = "") => {
     if (!sectorName) return;
     setLoadingStocks(true);
     try {
-      const response = await api.get("/stocks/", { params: { sector: sectorName } });
+      const response = await api.get("/stocks/", {
+        params: { sector: sectorName, country: countryCode || undefined },
+      });
       const rows = response.data || [];
       setLiveStocks(rows);
       setStocksError("");
@@ -94,9 +106,11 @@ export default function Dashboard() {
           if (!live) return row;
           return {
             ...row,
+            company: normalizeCompanyName(live, row.symbol),
+            company_name: normalizeCompanyName(live, row.symbol),
             currentPrice: Number(live.price ?? row.currentPrice),
             peRatio: Number(live.pe_ratio ?? row.peRatio),
-            sector: row.sector || live.sector || sector || "Unknown",
+            sector: live.sector || row.sector || sector || "Unknown",
             country: row.country || country || "OTHER",
           };
         })
@@ -115,16 +129,16 @@ export default function Dashboard() {
   useEffect(() => {
     if (!sector) return;
     setStockSymbol("");
-    loadStocks(sector);
-  }, [sector]);
+    loadStocks(sector, country);
+  }, [sector, country]);
 
   useEffect(() => {
     if (!sector) return;
     const intervalId = setInterval(() => {
-      loadStocks(sector);
+      loadStocks(sector, country);
     }, 60000);
     return () => clearInterval(intervalId);
-  }, [sector]);
+  }, [sector, country]);
 
   useEffect(() => {
     localStorage.setItem(PORTFOLIO_STORAGE_KEY, JSON.stringify(portfolioRows));
@@ -153,7 +167,8 @@ export default function Dashboard() {
         ...prev,
         {
           symbol: selected.symbol,
-          company: selected.company_name || selected.symbol,
+          company: normalizeCompanyName(selected, selected.symbol),
+          company_name: normalizeCompanyName(selected, selected.symbol),
           quantity: parsedQuantity,
           buyPrice: currentPrice * 0.97,
           currentPrice,

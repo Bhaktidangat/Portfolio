@@ -1,11 +1,15 @@
 from django.urls import path
 from .views import (
     BitcoinAnalysisView,
+    BitcoinForecastView,
     CompareAnalysisView,
     GoldSilverAnalysisView,
     GoldSilverCorrelationView,
     GoldSilverPredictionView,
     GoldSilverTrendView,
+    GrowthAnalysisView,
+    MLCompanyForecastView,
+    MLSummaryView,
     PortfolioAddStockView,
     PortfolioListCreateView,
     PortfolioRemoveStockView,
@@ -63,8 +67,28 @@ urlpatterns = [
         name="bitcoin-analysis",
     ),
     path(
+        "bitcoin/forecast/",
+        BitcoinForecastView.as_view(),
+        name="bitcoin-forecast",
+    ),
+    path(
         "compare/analysis/",
         CompareAnalysisView.as_view(),
         name="compare-analysis",
+    ),
+    path(
+        "growth/analysis/",
+        GrowthAnalysisView.as_view(),
+        name="growth-analysis",
+    ),
+    path(
+        "ml/summary/",
+        MLSummaryView.as_view(),
+        name="ml-summary",
+    ),
+    path(
+        "ml/company-forecast/",
+        MLCompanyForecastView.as_view(),
+        name="ml-company-forecast",
     ),
 ]

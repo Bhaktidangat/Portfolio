@@ -1,12 +1,16 @@
 from __future__ import annotations
 
+from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 from typing import Iterable
 
 import numpy as np
 import yfinance as yf
 from django.core.cache import cache
+from sklearn.cluster import KMeans
+from sklearn.decomposition import PCA
 from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import StandardScaler
 
 from .models import Stock
 
@@ -120,15 +124,43 @@ SECTOR_SYMBOLS = {
         "AVB",
     ],
 }
+
+COUNTRY_SECTOR_SYMBOLS = {
+    "US": SECTOR_SYMBOLS,
+    "IN": {
+        "Technology": ["INFY.NS", "TCS.NS", "WIPRO.NS", "HCLTECH.NS", "TECHM.NS"],
+        "Healthcare": ["SUNPHARMA.NS", "DRREDDY.NS", "CIPLA.NS", "DIVISLAB.NS", "APOLLOHOSP.NS"],
+        "Banking": ["HDFCBANK.NS", "ICICIBANK.NS", "SBIN.NS", "AXISBANK.NS", "KOTAKBANK.NS"],
+        "Energy": ["RELIANCE.NS", "ONGC.NS", "COALINDIA.NS", "BPCL.NS", "IOC.NS"],
+        "Consumer Goods": ["ITC.NS", "HINDUNILVR.NS", "NESTLEIND.NS", "BRITANNIA.NS", "DABUR.NS"],
+        "Industrials": ["LT.NS", "SIEMENS.NS", "BEL.NS", "HAL.NS", "ADANIPORTS.NS"],
+        "Telecommunications": ["BHARTIARTL.NS", "INDUSTOWER.NS", "TATACOMM.NS", "MTNL.NS", "RAILTEL.NS"],
+        "Utilities": ["NTPC.NS", "POWERGRID.NS", "TATAPOWER.NS", "ADANIPOWER.NS", "NHPC.NS"],
+        "Real Estate": ["DLF.NS", "GODREJPROP.NS", "OBEROIRLTY.NS", "PRESTIGE.NS", "PHOENIXLTD.NS"],
+    },
+    "UK": {
+        "Technology": ["SGE.L", "DARK.L", "SPT.L", "KWS.L", "CCC.L"],
+        "Healthcare": ["AZN.L", "GSK.L", "HIK.L", "SN.L", "CTEC.L"],
+        "Banking": ["HSBA.L", "BARC.L", "LLOY.L", "STAN.L", "NWG.L"],
+        "Energy": ["SHEL.L", "BP.L", "ENOG.L", "HBR.L", "SEPL.L"],
+        "Consumer Goods": ["ULVR.L", "DGE.L", "BATS.L", "IMB.L", "ABF.L"],
+        "Industrials": ["RR.L", "BA.L", "SMIN.L", "WEIR.L", "MGGT.L"],
+        "Telecommunications": ["VOD.L", "BT-A.L", "MONY.L", "FERG.L", "KGF.L"],
+        "Utilities": ["NG.L", "SSE.L", "UU.L", "SVT.L", "PNN.L"],
+        "Real Estate": ["LAND.L", "BLND.L", "BBOX.L", "PSN.L", "TW.L"],
+    },
+}
 DEFAULT_YFINANCE_SYMBOLS = [symbol for symbols in SECTOR_SYMBOLS.values() for symbol in symbols]
 
 SYNC_TTL_SECONDS = 60
 
 
-def get_symbols_for_sector(sector: str | None) -> list[str]:
+def get_symbols_for_sector(sector: str | None, country: str | None = None) -> list[str]:
+    country_code = (country or "").strip().upper()
+    sector_map = COUNTRY_SECTOR_SYMBOLS.get(country_code) or SECTOR_SYMBOLS
     if not sector:
-        return DEFAULT_YFINANCE_SYMBOLS
-    return SECTOR_SYMBOLS.get(sector, [])
+        return [symbol for symbols in sector_map.values() for symbol in symbols]
+    return sector_map.get(sector, [])
 
 
 def _extract_price(ticker: yf.Ticker, info: dict) -> float | None:
@@ -544,4 +576,370 @@ def get_assets_compare_analysis(period: str = "2y") -> dict:
     return {
         "assets": ranked_with_position,
         "best_asset": ranked_with_position[0] if ranked_with_position else None,
+    }
+
+
+def _normalize_symbols(symbols: Iterable[str] | None) -> list[str]:
+    normalized = sorted({s.strip().upper() for s in (symbols or []) if s and s.strip()})
+    return normalized
+
+
+def _historical_closes_for_symbol(symbol: str, period: str = "6mo") -> list[tuple[str, float]]:
+    try:
+        ticker = yf.Ticker(symbol)
+        history = ticker.history(period=period, interval="1d")
+        if history is None or history.empty or "Close" not in history.columns:
+            return []
+        close_series = history["Close"].dropna()
+        return [
+            (idx.strftime("%Y-%m-%d"), float(value))
+            for idx, value in close_series.items()
+            if value == value
+        ]
+    except Exception:
+        return []
+
+
+def _linear_regression_forecast_series(series: list[float], forecast_days: int) -> list[float]:
+    if not series or forecast_days <= 0:
+        return []
+    if len(series) < 2:
+        return [float(series[-1])] * forecast_days
+
+    x = np.arange(len(series)).reshape(-1, 1)
+    y = np.array(series, dtype=float)
+    model = LinearRegression()
+    model.fit(x, y)
+    future_x = np.arange(len(series), len(series) + forecast_days).reshape(-1, 1)
+    predicted = model.predict(future_x)
+    return [float(val) for val in predicted]
+
+
+def _iterative_arima_forecast(series: list[float], forecast_days: int) -> list[float]:
+    if not series or forecast_days <= 0:
+        return []
+
+    work_series = [float(v) for v in series]
+    forecast: list[float] = []
+    for _ in range(forecast_days):
+        next_val = _arima_next_price(work_series)
+        if next_val is None:
+            next_val = _linear_regression_next_price(work_series) or work_series[-1]
+        next_val = float(next_val)
+        forecast.append(next_val)
+        work_series.append(next_val)
+    return forecast
+
+
+def _build_date_labels(last_date: str | None, history_len: int, forecast_days: int) -> tuple[list[str], list[str]]:
+    if not last_date:
+        return ([str(i + 1) for i in range(history_len)], [f"F{i + 1}" for i in range(forecast_days)])
+
+    try:
+        start = np.datetime64(last_date)
+        hist_labels = [
+            str(start - np.timedelta64(history_len - 1 - i, "D"))
+            for i in range(history_len)
+        ]
+        forecast_labels = [str(start + np.timedelta64(i + 1, "D")) for i in range(forecast_days)]
+        return hist_labels, forecast_labels
+    except Exception:
+        return ([str(i + 1) for i in range(history_len)], [f"F{i + 1}" for i in range(forecast_days)])
+
+
+def get_growth_analysis(symbols: Iterable[str], forecast_days: int = 7) -> dict:
+    normalized_symbols = _normalize_symbols(symbols)
+    if not normalized_symbols:
+        return {
+            "top_growth_sectors": [],
+            "sector_allocation": [],
+            "pca_points": [],
+            "forecast": {"history_labels": [], "history_values": [], "forecast_labels": [], "forecast_values": []},
+        }
+
+    stocks = {stock.symbol: stock for stock in Stock.objects.filter(symbol__in=normalized_symbols)}
+    history_by_symbol: dict[str, list[tuple[str, float]]] = {}
+    for symbol in normalized_symbols:
+        rows = _historical_closes_for_symbol(symbol, period="6mo")
+        if rows:
+            history_by_symbol[symbol] = rows
+
+    sector_growth_map: dict[str, list[float]] = defaultdict(list)
+    sector_allocation_map: dict[str, float] = defaultdict(float)
+    pca_rows: list[dict] = []
+    aggregate_history_map: dict[str, float] = defaultdict(float)
+
+    for symbol, rows in history_by_symbol.items():
+        prices = [price for _, price in rows]
+        if len(prices) < 2:
+            continue
+
+        first_price = prices[0]
+        last_price = prices[-1]
+        growth_pct = ((last_price - first_price) / first_price) * 100.0 if first_price else 0.0
+        returns = np.diff(prices) / np.maximum(np.array(prices[:-1]), 1e-6)
+        volatility = float(np.std(returns)) * 100.0 if returns.size else 0.0
+        stock_obj = stocks.get(symbol)
+        sector = (stock_obj.sector if stock_obj else "Unknown") or "Unknown"
+        company_name = (stock_obj.company_name if stock_obj else symbol) or symbol
+        pe_ratio = float(stock_obj.pe_ratio) if stock_obj and stock_obj.pe_ratio is not None else 20.0
+
+        sector_growth_map[sector].append(growth_pct)
+        sector_allocation_map[sector] += max(last_price, 0.0)
+
+        pca_rows.append(
+            {
+                "symbol": symbol,
+                "company_name": company_name,
+                "sector": sector,
+                "features": [growth_pct, volatility, pe_ratio],
+            }
+        )
+
+        for date_str, close in rows:
+            aggregate_history_map[date_str] += close
+
+    top_growth_sectors = sorted(
+        [
+            {"sector": sector, "growth_pct": round(float(np.mean(values)), 4)}
+            for sector, values in sector_growth_map.items()
+            if values
+        ],
+        key=lambda row: row["growth_pct"],
+        reverse=True,
+    )[:8]
+
+    total_alloc = sum(sector_allocation_map.values()) or 1.0
+    sector_allocation = sorted(
+        [
+            {
+                "sector": sector,
+                "value": round(value, 4),
+                "allocation_pct": round((value / total_alloc) * 100.0, 2),
+            }
+            for sector, value in sector_allocation_map.items()
+        ],
+        key=lambda row: row["value"],
+        reverse=True,
+    )
+
+    pca_points: list[dict] = []
+    if pca_rows:
+        feature_matrix = np.array([row["features"] for row in pca_rows], dtype=float)
+        if len(pca_rows) >= 2:
+            scaler = StandardScaler()
+            scaled = scaler.fit_transform(feature_matrix)
+            pca_model = PCA(n_components=2, random_state=42)
+            transformed = pca_model.fit_transform(scaled)
+            for row, coords in zip(pca_rows, transformed):
+                pca_points.append(
+                    {
+                        "symbol": row["symbol"],
+                        "company_name": row["company_name"],
+                        "sector": row["sector"],
+                        "x": round(float(coords[0]), 5),
+                        "y": round(float(coords[1]), 5),
+                    }
+                )
+        else:
+            row = pca_rows[0]
+            pca_points.append(
+                {
+                    "symbol": row["symbol"],
+                    "company_name": row["company_name"],
+                    "sector": row["sector"],
+                    "x": 0.0,
+                    "y": 0.0,
+                }
+            )
+
+    sorted_dates = sorted(aggregate_history_map.keys())
+    history_values = [float(aggregate_history_map[dt]) for dt in sorted_dates]
+    forecast_values = _linear_regression_forecast_series(history_values, forecast_days)
+    history_labels, forecast_labels = _build_date_labels(
+        sorted_dates[-1] if sorted_dates else None,
+        len(history_values),
+        forecast_days,
+    )
+
+    return {
+        "top_growth_sectors": top_growth_sectors,
+        "sector_allocation": sector_allocation,
+        "pca_points": pca_points,
+        "forecast": {
+            "history_labels": history_labels,
+            "history_values": [round(v, 4) for v in history_values],
+            "forecast_labels": forecast_labels,
+            "forecast_values": [round(v, 4) for v in forecast_values],
+        },
+    }
+
+
+def get_ml_summary(symbols: Iterable[str]) -> dict:
+    normalized_symbols = _normalize_symbols(symbols)
+    if not normalized_symbols:
+        return {
+            "cluster_groups": 0,
+            "linear_regression_intercept": 0.0,
+            "arima_predicted_value": 0.0,
+            "companies": [],
+        }
+
+    stocks = {stock.symbol: stock for stock in Stock.objects.filter(symbol__in=normalized_symbols)}
+    features: list[list[float]] = []
+    companies: list[dict] = []
+    aggregate_history_map: dict[str, float] = defaultdict(float)
+
+    for symbol in normalized_symbols:
+        rows = _historical_closes_for_symbol(symbol, period="6mo")
+        if not rows:
+            continue
+        prices = [price for _, price in rows]
+        if len(prices) < 3:
+            continue
+        ret = ((prices[-1] - prices[0]) / prices[0]) * 100.0 if prices[0] else 0.0
+        returns = np.diff(prices) / np.maximum(np.array(prices[:-1]), 1e-6)
+        vol = float(np.std(returns)) * 100.0 if returns.size else 0.0
+        pe_ratio = (
+            float(stocks[symbol].pe_ratio)
+            if symbol in stocks and stocks[symbol].pe_ratio is not None
+            else 20.0
+        )
+        features.append([ret, vol, pe_ratio])
+
+        stock_obj = stocks.get(symbol)
+        companies.append(
+            {
+                "symbol": symbol,
+                "company_name": (stock_obj.company_name if stock_obj else symbol) or symbol,
+            }
+        )
+        for date_str, close in rows:
+            aggregate_history_map[date_str] += close
+
+    cluster_groups = 0
+    if features:
+        feature_matrix = np.array(features, dtype=float)
+        n_clusters = min(3, len(feature_matrix))
+        if n_clusters >= 1:
+            km = KMeans(n_clusters=n_clusters, random_state=42, n_init=10)
+            km.fit(feature_matrix)
+            cluster_groups = int(len(set(km.labels_.tolist())))
+
+    sorted_dates = sorted(aggregate_history_map.keys())
+    series = [float(aggregate_history_map[dt]) for dt in sorted_dates]
+    intercept = 0.0
+    if len(series) >= 2:
+        x = np.arange(len(series)).reshape(-1, 1)
+        y = np.array(series, dtype=float)
+        lr = LinearRegression()
+        lr.fit(x, y)
+        intercept = float(lr.intercept_)
+
+    arima_predicted_value = _arima_next_price(series)
+    if arima_predicted_value is None:
+        arima_predicted_value = _linear_regression_next_price(series) or (series[-1] if series else 0.0)
+
+    return {
+        "cluster_groups": cluster_groups,
+        "linear_regression_intercept": round(intercept, 4),
+        "arima_predicted_value": round(float(arima_predicted_value), 4),
+        "companies": sorted(companies, key=lambda row: row["company_name"]),
+    }
+
+
+def get_company_forecast(symbol: str, forecast_days: int = 7) -> dict:
+    normalized_symbol = (symbol or "").strip().upper()
+    if not normalized_symbol:
+        return {
+            "symbol": "",
+            "company_name": "",
+            "history_labels": [],
+            "history_values": [],
+            "forecast_labels": [],
+            "forecast_values": [],
+        }
+
+    rows = _historical_closes_for_symbol(normalized_symbol, period="6mo")
+    if not rows:
+        return {
+            "symbol": normalized_symbol,
+            "company_name": normalized_symbol,
+            "history_labels": [],
+            "history_values": [],
+            "forecast_labels": [],
+            "forecast_values": [],
+        }
+
+    history_labels = [date for date, _ in rows]
+    history_values = [float(price) for _, price in rows]
+    forecast_values = _linear_regression_forecast_series(history_values, forecast_days)
+    _, forecast_labels = _build_date_labels(
+        history_labels[-1] if history_labels else None,
+        len(history_values),
+        forecast_days,
+    )
+    stock_obj = Stock.objects.filter(symbol=normalized_symbol).first()
+    company_name = (stock_obj.company_name if stock_obj else normalized_symbol) or normalized_symbol
+
+    return {
+        "symbol": normalized_symbol,
+        "company_name": company_name,
+        "history_labels": history_labels,
+        "history_values": [round(v, 4) for v in history_values],
+        "forecast_labels": forecast_labels,
+        "forecast_values": [round(v, 4) for v in forecast_values],
+    }
+
+
+def get_bitcoin_forecast_analysis(period: str = "6mo", forecast_days: int = 7) -> dict:
+    rows = _historical_closes_for_symbol("BTC-USD", period=period)
+    if not rows:
+        return {
+            "historical": {"labels": [], "values": []},
+            "forecast": {"labels": [], "values": []},
+            "summary": {
+                "trend": "neutral",
+                "predicted_movement": "flat",
+                "arima_latest_prediction": None,
+                "insights": [],
+                "explanation": "Insufficient BTC-USD historical data for forecasting.",
+            },
+        }
+
+    hist_labels = [date for date, _ in rows]
+    hist_values = [float(price) for _, price in rows]
+    forecast_values = _iterative_arima_forecast(hist_values, forecast_days)
+    _, forecast_labels = _build_date_labels(
+        hist_labels[-1] if hist_labels else None,
+        len(hist_values),
+        forecast_days,
+    )
+
+    current = hist_values[-1]
+    predicted = forecast_values[-1] if forecast_values else current
+    pct = ((predicted - current) / current) * 100.0 if current else 0.0
+    trend = "bullish" if pct > 1 else "bearish" if pct < -1 else "neutral"
+    movement = "upward" if pct > 0.35 else "downward" if pct < -0.35 else "sideways"
+
+    insights = [
+        f"Current close: {current:.2f} USD",
+        f"7-day forecast end: {predicted:.2f} USD",
+        f"Expected move: {pct:.2f}%",
+    ]
+    explanation = (
+        "ARIMA-based projection extends recent BTC-USD behavior. "
+        "Forecast values should be treated as short-term probabilistic guidance, not certainty."
+    )
+
+    return {
+        "historical": {"labels": hist_labels, "values": [round(v, 4) for v in hist_values]},
+        "forecast": {"labels": forecast_labels, "values": [round(v, 4) for v in forecast_values]},
+        "summary": {
+            "trend": trend,
+            "predicted_movement": movement,
+            "arima_latest_prediction": round(predicted, 4),
+            "insights": insights,
+            "explanation": explanation,
+        },
     }

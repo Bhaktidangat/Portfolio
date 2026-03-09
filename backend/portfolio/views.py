@@ -14,10 +14,14 @@ from .serializers import (
 )
 from .services import (
     SECTOR_SYMBOLS,
+    get_bitcoin_forecast_analysis,
     get_assets_compare_analysis,
     get_bitcoin_prediction_analysis,
+    get_company_forecast,
     get_bulk_stock_direction_forecasts,
     get_gold_silver_prediction_analysis,
+    get_growth_analysis,
+    get_ml_summary,
     get_symbols_for_sector,
     sync_stocks_from_yfinance,
 )
@@ -39,24 +43,26 @@ class StockListCreateView(generics.ListCreateAPIView):
 
     def list(self, request, *args, **kwargs):
         sector = request.query_params.get("sector")
+        country = request.query_params.get("country")
         symbols_param = request.query_params.get("symbols")
         if symbols_param:
             symbols = [s.strip().upper() for s in symbols_param.split(",") if s.strip()]
             sync_stocks_from_yfinance(symbols, sector_override=sector)
         else:
-            symbols = get_symbols_for_sector(sector)
+            symbols = get_symbols_for_sector(sector, country)
             sync_stocks_from_yfinance(symbols, sector_override=sector)
         return super().list(request, *args, **kwargs)
 
     def get_queryset(self):
         queryset = Stock.objects.all().order_by("symbol")
         sector = self.request.query_params.get("sector")
+        country = self.request.query_params.get("country")
         symbols_param = self.request.query_params.get("symbols")
         if symbols_param:
             symbols = [s.strip().upper() for s in symbols_param.split(",") if s.strip()]
             return queryset.filter(symbol__in=symbols).order_by("symbol")
 
-        symbols = get_symbols_for_sector(sector)
+        symbols = get_symbols_for_sector(sector, country)
         if not symbols:
             return queryset.none()
         return queryset.filter(symbol__in=symbols).order_by("symbol")
@@ -391,4 +397,66 @@ class CompareAnalysisView(APIView):
 
     def get(self, request):
         result = get_assets_compare_analysis(period="2y")
+        return Response(result)
+
+
+class GrowthAnalysisView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        symbols_param = request.query_params.get("symbols", "")
+        symbols = [s.strip().upper() for s in symbols_param.split(",") if s.strip()]
+        if not symbols:
+            return Response(
+                {
+                    "top_growth_sectors": [],
+                    "sector_allocation": [],
+                    "pca_points": [],
+                    "forecast": {
+                        "history_labels": [],
+                        "history_values": [],
+                        "forecast_labels": [],
+                        "forecast_values": [],
+                    },
+                }
+            )
+        result = get_growth_analysis(symbols, forecast_days=7)
+        return Response(result)
+
+
+class MLSummaryView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        symbols_param = request.query_params.get("symbols", "")
+        symbols = [s.strip().upper() for s in symbols_param.split(",") if s.strip()]
+        result = get_ml_summary(symbols)
+        return Response(result)
+
+
+class MLCompanyForecastView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        symbol = (request.query_params.get("symbol") or "").strip().upper()
+        if not symbol:
+            return Response(
+                {
+                    "symbol": "",
+                    "company_name": "",
+                    "history_labels": [],
+                    "history_values": [],
+                    "forecast_labels": [],
+                    "forecast_values": [],
+                }
+            )
+        result = get_company_forecast(symbol=symbol, forecast_days=7)
+        return Response(result)
+
+
+class BitcoinForecastView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        result = get_bitcoin_forecast_analysis(period="6mo", forecast_days=7)
         return Response(result)
