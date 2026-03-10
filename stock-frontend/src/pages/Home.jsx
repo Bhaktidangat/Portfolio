@@ -19,6 +19,7 @@ function getUpdatedTickerRows(rows) {
 export default function Home() {
   const [tickerRows, setTickerRows] = useState(trendingStocks);
   const navigate = useNavigate();
+  const isLoggedIn = localStorage.getItem("portfolio_user") === "true";
   const quickLinks = [
     { to: "/dashboard", label: "Dashboard" },
     { to: "/growth", label: "Growth" },
@@ -52,7 +53,7 @@ export default function Home() {
                 key={item.to}
                 type="button"
                 className="btn home-quick-link-btn"
-                onClick={() => navigate(item.to)}
+                onClick={() => navigate(isLoggedIn ? item.to : "/login")}
               >
                 {item.label}
               </button>

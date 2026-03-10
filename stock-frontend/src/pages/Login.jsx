@@ -1,11 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function Login() {
-  const [isSignupMode, setIsSignupMode] = useState(false);
+export default function Login({ defaultMode = "login" }) {
+  const [isSignupMode, setIsSignupMode] = useState(defaultMode === "signup");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem("portfolio_user") === "true";
+    if (isLoggedIn) {
+      navigate("/", { replace: true });
+    }
+  }, [navigate]);
 
   const submit = (event) => {
     event.preventDefault();
@@ -14,7 +21,7 @@ export default function Login() {
     localStorage.removeItem("refresh_token");
     localStorage.setItem("use_jwt_auth", "false");
     localStorage.setItem("portfolio_user", "true");
-    navigate("/home", { replace: true });
+    navigate("/", { replace: true });
   };
 
   return (

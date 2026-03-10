@@ -76,6 +76,12 @@ a {
   justify-content: center;
 }
 
+.nav-auth {
+  display: flex;
+  gap: 8px;
+  margin-left: 14px;
+}
+
 .nav-link {
   padding: 9px 14px;
   border: 1px solid rgba(176, 145, 97, 0.35);
