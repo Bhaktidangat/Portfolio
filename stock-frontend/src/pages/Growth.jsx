@@ -59,11 +59,13 @@ export default function Growth() {
 
   useEffect(() => {
     const run = async () => {
-      const symbols = getPortfolioSymbols();
-      if (!symbols.length) {
-        setLoading(false);
-        return;
-      }
+      let symbols = [];
+try {
+  const portfolioRes = await api.get("/portfolio/");
+  const stocks = portfolioRes.data?.stocks || [];
+  symbols = stocks.map((item) => String(item.stock?.symbol || "").trim().toUpperCase()).filter(Boolean);
+} catch { setLoading(false); return; }
+if (!symbols.length) { setLoading(false); return; }
       setLoading(true);
       try {
         const response = await api.get("/growth/analysis/", {

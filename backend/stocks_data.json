@@ -1,0 +1,2147 @@
+[
+{
+  "model": "portfolio.stock",
+  "pk": 1,
+  "fields": {
+    "symbol": "MSFT",
+    "company_name": "Microsoft Corporation",
+    "sector": "Technology",
+    "price": 408.9599914550781,
+    "pe_ratio": 25.575985,
+    "min_price": 408.510009765625,
+    "max_price": 413.04998779296875
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 2,
+  "fields": {
+    "symbol": "AAPL",
+    "company_name": "Apple Inc.",
+    "sector": "Technology",
+    "price": 257.4599914550781,
+    "pe_ratio": 32.58987,
+    "min_price": 254.3699951171875,
+    "max_price": 258.7699890136719
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 3,
+  "fields": {
+    "symbol": "NVDA",
+    "company_name": "NVIDIA Corporation",
+    "sector": "Technology",
+    "price": 177.82000732421875,
+    "pe_ratio": 36.229126,
+    "min_price": 176.82000732421875,
+    "max_price": 182.75999450683594
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 4,
+  "fields": {
+    "symbol": "AVGO",
+    "company_name": "Broadcom Inc.",
+    "sector": "Technology",
+    "price": 330.4800109863281,
+    "pe_ratio": 69.42227,
+    "min_price": 327.3999938964844,
+    "max_price": 343.510009765625
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 5,
+  "fields": {
+    "symbol": "ORCL",
+    "company_name": "Oracle Corporation",
+    "sector": "Technology",
+    "price": 152.9600067138672,
+    "pe_ratio": 28.75188,
+    "min_price": 151.6199951171875,
+    "max_price": 159.19000244140625
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 6,
+  "fields": {
+    "symbol": "ADBE",
+    "company_name": "Adobe Inc.",
+    "sector": "Technology",
+    "price": 283.6199951171875,
+    "pe_ratio": 16.97307,
+    "min_price": 276.04998779296875,
+    "max_price": 283.8500061035156
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 7,
+  "fields": {
+    "symbol": "CRM",
+    "company_name": "Salesforce, Inc.",
+    "sector": "Technology",
+    "price": 202.11000061035156,
+    "pe_ratio": 25.911537,
+    "min_price": 197.3699951171875,
+    "max_price": 202.9600067138672
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 8,
+  "fields": {
+    "symbol": "CSCO",
+    "company_name": "Cisco Systems, Inc.",
+    "sector": "Technology",
+    "price": 78.63999938964844,
+    "pe_ratio": 28.28777,
+    "min_price": 78.3499984741211,
+    "max_price": 79.5199966430664
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 9,
+  "fields": {
+    "symbol": "IBM",
+    "company_name": "International Business Machines Corporation",
+    "sector": "Technology",
+    "price": 258.8500061035156,
+    "pe_ratio": 23.256964,
+    "min_price": 252.2100067138672,
+    "max_price": 259.3999938964844
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 10,
+  "fields": {
+    "symbol": "ACN",
+    "company_name": "Accenture plc",
+    "sector": "Technology",
+    "price": 215.0,
+    "pe_ratio": 17.768595,
+    "min_price": 212.0,
+    "max_price": 218.60000610351562
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 12,
+  "fields": {
+    "symbol": "JNJ",
+    "company_name": "Johnson & Johnson",
+    "sector": "Healthcare",
+    "price": 240.39999389648438,
+    "pe_ratio": 21.795105,
+    "min_price": 235.42999267578125,
+    "max_price": 240.7899932861328
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 13,
+  "fields": {
+    "symbol": "PFE",
+    "company_name": "Pfizer Inc.",
+    "sector": "Healthcare",
+    "price": 27.049999237060547,
+    "pe_ratio": 19.889706,
+    "min_price": 26.229999542236328,
+    "max_price": 27.1299991607666
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 14,
+  "fields": {
+    "symbol": "UNH",
+    "company_name": "UnitedHealth Group Incorporated",
+    "sector": "Healthcare",
+    "price": 286.4800109863281,
+    "pe_ratio": 21.637463,
+    "min_price": 283.04998779296875,
+    "max_price": 291.3299865722656
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 15,
+  "fields": {
+    "symbol": "MRK",
+    "company_name": "Merck & Co., Inc.",
+    "sector": "Healthcare",
+    "price": 115.79000091552734,
+    "pe_ratio": 15.905219,
+    "min_price": 113.81999969482422,
+    "max_price": 116.36000061035156
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 16,
+  "fields": {
+    "symbol": "ABBV",
+    "company_name": "AbbVie Inc.",
+    "sector": "Healthcare",
+    "price": 230.11000061035156,
+    "pe_ratio": 97.092834,
+    "min_price": 226.8000030517578,
+    "max_price": 231.60000610351562
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 17,
+  "fields": {
+    "symbol": "TMO",
+    "company_name": "Thermo Fisher Scientific Inc.",
+    "sector": "Healthcare",
+    "price": 501.9700012207031,
+    "pe_ratio": 28.327879,
+    "min_price": 500.0,
+    "max_price": 514.3800048828125
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 18,
+  "fields": {
+    "symbol": "DHR",
+    "company_name": "Danaher Corporation",
+    "sector": "Healthcare",
+    "price": 195.5,
+    "pe_ratio": 38.94422,
+    "min_price": 195.11000061035156,
+    "max_price": 200.82000732421875
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 19,
+  "fields": {
+    "symbol": "LLY",
+    "company_name": "Eli Lilly and Company",
+    "sector": "Healthcare",
+    "price": 990.3300170898438,
+    "pe_ratio": 43.095303,
+    "min_price": 966.0900268554688,
+    "max_price": 991.219970703125
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 20,
+  "fields": {
+    "symbol": "JPM",
+    "company_name": "JPMorgan Chase & Co.",
+    "sector": "Banking",
+    "price": 289.4800109863281,
+    "pe_ratio": 14.452322,
+    "min_price": 283.7099914550781,
+    "max_price": 289.989990234375
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 21,
+  "fields": {
+    "symbol": "BAC",
+    "company_name": "Bank of America Corporation",
+    "sector": "Banking",
+    "price": 48.63999938964844,
+    "pe_ratio": 12.766404,
+    "min_price": 47.619998931884766,
+    "max_price": 48.70000076293945
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 22,
+  "fields": {
+    "symbol": "WFC",
+    "company_name": "Wells Fargo & Company",
+    "sector": "Banking",
+    "price": 80.41999816894531,
+    "pe_ratio": 12.846644,
+    "min_price": 77.94000244140625,
+    "max_price": 80.56999969482422
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 23,
+  "fields": {
+    "symbol": "C",
+    "company_name": "Citigroup Inc.",
+    "sector": "Banking",
+    "price": 106.52999877929688,
+    "pe_ratio": 15.240344,
+    "min_price": 103.08999633789062,
+    "max_price": 106.58999633789062
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 24,
+  "fields": {
+    "symbol": "GS",
+    "company_name": "The Goldman Sachs Group, Inc.",
+    "sector": "Banking",
+    "price": 821.4199829101562,
+    "pe_ratio": 15.99961,
+    "min_price": 801.3300170898438,
+    "max_price": 827.1599731445312
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 25,
+  "fields": {
+    "symbol": "MS",
+    "company_name": "Morgan Stanley",
+    "sector": "Banking",
+    "price": 160.27000427246094,
+    "pe_ratio": 15.697356,
+    "min_price": 155.35000610351562,
+    "max_price": 160.35000610351562
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 26,
+  "fields": {
+    "symbol": "PNC",
+    "company_name": "The PNC Financial Services Group, Inc.",
+    "sector": "Banking",
+    "price": 206.1199951171875,
+    "pe_ratio": 12.424352,
+    "min_price": 202.8300018310547,
+    "max_price": 209.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 27,
+  "fields": {
+    "symbol": "USB",
+    "company_name": "U.S. Bancorp",
+    "sector": "Banking",
+    "price": 52.369998931884766,
+    "pe_ratio": 11.335498,
+    "min_price": 51.369998931884766,
+    "max_price": 52.849998474121094
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 28,
+  "fields": {
+    "symbol": "NEE",
+    "company_name": "NextEra Energy, Inc.",
+    "sector": "Utilities",
+    "price": 91.0199966430664,
+    "pe_ratio": 27.581818,
+    "min_price": 90.01000213623047,
+    "max_price": 91.62999725341797
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 29,
+  "fields": {
+    "symbol": "DUK",
+    "company_name": "Duke Energy Corporation",
+    "sector": "Utilities",
+    "price": 132.5,
+    "pe_ratio": 20.998415,
+    "min_price": 130.22999572753906,
+    "max_price": 132.6300048828125
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 30,
+  "fields": {
+    "symbol": "SO",
+    "company_name": "The Southern Company",
+    "sector": "Utilities",
+    "price": 97.4800033569336,
+    "pe_ratio": 24.867348,
+    "min_price": 96.04000091552734,
+    "max_price": 97.93000030517578
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 31,
+  "fields": {
+    "symbol": "D",
+    "company_name": "Dominion Energy, Inc.",
+    "sector": "Utilities",
+    "price": 63.2400016784668,
+    "pe_ratio": 18.224785,
+    "min_price": 62.040000915527344,
+    "max_price": 63.400001525878906
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 32,
+  "fields": {
+    "symbol": "AEP",
+    "company_name": "American Electric Power Company, Inc.",
+    "sector": "Utilities",
+    "price": 131.8699951171875,
+    "pe_ratio": 19.8003,
+    "min_price": 130.16000366210938,
+    "max_price": 132.6300048828125
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 33,
+  "fields": {
+    "symbol": "EXC",
+    "company_name": "Exelon Corporation",
+    "sector": "Utilities",
+    "price": 49.36000061035156,
+    "pe_ratio": 18.080585,
+    "min_price": 48.33000183105469,
+    "max_price": 49.470001220703125
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 34,
+  "fields": {
+    "symbol": "SRE",
+    "company_name": "Sempra",
+    "sector": "Utilities",
+    "price": 92.62999725341797,
+    "pe_ratio": 33.683636,
+    "min_price": 91.18000030517578,
+    "max_price": 93.26000213623047
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 35,
+  "fields": {
+    "symbol": "XEL",
+    "company_name": "Xcel Energy Inc.",
+    "sector": "Utilities",
+    "price": 82.5199966430664,
+    "pe_ratio": 24.128653,
+    "min_price": 80.94000244140625,
+    "max_price": 82.91000366210938
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 36,
+  "fields": {
+    "symbol": "PEG",
+    "company_name": "Public Service Enterprise Group Incorporated",
+    "sector": "Utilities",
+    "price": 83.3499984741211,
+    "pe_ratio": 19.751186,
+    "min_price": 82.4000015258789,
+    "max_price": 83.69999694824219
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 37,
+  "fields": {
+    "symbol": "ED",
+    "company_name": "Consolidated Edison, Inc.",
+    "sector": "Utilities",
+    "price": 112.27999877929688,
+    "pe_ratio": 19.907803,
+    "min_price": 110.0,
+    "max_price": 112.55999755859375
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 38,
+  "fields": {
+    "symbol": "VZ",
+    "company_name": "Verizon Communications Inc.",
+    "sector": "Telecommunications",
+    "price": 51.119998931884766,
+    "pe_ratio": 12.591133,
+    "min_price": 50.40999984741211,
+    "max_price": 51.25
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 39,
+  "fields": {
+    "symbol": "T",
+    "company_name": "AT&T Inc.",
+    "sector": "Telecommunications",
+    "price": 28.639999389648438,
+    "pe_ratio": 9.421053,
+    "min_price": 28.329999923706055,
+    "max_price": 28.950000762939453
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 40,
+  "fields": {
+    "symbol": "TMUS",
+    "company_name": "T-Mobile US, Inc.",
+    "sector": "Telecommunications",
+    "price": 221.57000732421875,
+    "pe_ratio": 22.771841,
+    "min_price": 217.97999572753906,
+    "max_price": 221.9199981689453
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 41,
+  "fields": {
+    "symbol": "CHTR",
+    "company_name": "Charter Communications, Inc.",
+    "sector": "Telecommunications",
+    "price": 232.24000549316406,
+    "pe_ratio": 6.413698,
+    "min_price": 227.5,
+    "max_price": 234.5500030517578
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 42,
+  "fields": {
+    "symbol": "CMCSA",
+    "company_name": "Comcast Corporation",
+    "sector": "Telecommunications",
+    "price": 31.90999984741211,
+    "pe_ratio": 5.9202228,
+    "min_price": 30.989999771118164,
+    "max_price": 31.969999313354492
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 43,
+  "fields": {
+    "symbol": "BCE",
+    "company_name": "BCE Inc.",
+    "sector": "Telecommunications",
+    "price": 26.059999465942383,
+    "pe_ratio": 5.2434607,
+    "min_price": 25.670000076293945,
+    "max_price": 26.170000076293945
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 44,
+  "fields": {
+    "symbol": "TU",
+    "company_name": "TELUS Corporation",
+    "sector": "Telecommunications",
+    "price": 13.699999809265137,
+    "pe_ratio": 25.849058,
+    "min_price": 13.670000076293945,
+    "max_price": 13.920000076293945
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 45,
+  "fields": {
+    "symbol": "VOD",
+    "company_name": "Vodafone Group Public Limited Company",
+    "sector": "Telecommunications",
+    "price": 14.510000228881836,
+    "pe_ratio": null,
+    "min_price": 14.210000038146973,
+    "max_price": 14.5600004196167
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 46,
+  "fields": {
+    "symbol": "TEF",
+    "company_name": "Telef≤nica, S.A.",
+    "sector": "Telecommunications",
+    "price": 4.199999809265137,
+    "pe_ratio": null,
+    "min_price": 4.110000133514404,
+    "max_price": 4.21999979019165
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 47,
+  "fields": {
+    "symbol": "AMT",
+    "company_name": "American Tower Corporation",
+    "sector": "Real Estate",
+    "price": 188.58999633789062,
+    "pe_ratio": 34.98887,
+    "min_price": 185.86000061035156,
+    "max_price": 190.14999389648438
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 48,
+  "fields": {
+    "symbol": "PLD",
+    "company_name": "Prologis, Inc.",
+    "sector": "Real Estate",
+    "price": 134.5399932861328,
+    "pe_ratio": 37.68627,
+    "min_price": 132.89999389648438,
+    "max_price": 135.9199981689453
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 49,
+  "fields": {
+    "symbol": "CCI",
+    "company_name": "Crown Castle Inc.",
+    "sector": "Real Estate",
+    "price": 90.43000030517578,
+    "pe_ratio": 35.884922,
+    "min_price": 89.37000274658203,
+    "max_price": 90.95999908447266
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 50,
+  "fields": {
+    "symbol": "EQIX",
+    "company_name": "Equinix, Inc.",
+    "sector": "Real Estate",
+    "price": 937.2000122070312,
+    "pe_ratio": 68.01161,
+    "min_price": 933.9600219726562,
+    "max_price": 956.6300048828125
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 51,
+  "fields": {
+    "symbol": "O",
+    "company_name": "Realty Income Corporation",
+    "sector": "Real Estate",
+    "price": 65.0,
+    "pe_ratio": 55.555557,
+    "min_price": 64.23999786376953,
+    "max_price": 65.05999755859375
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 52,
+  "fields": {
+    "symbol": "SPG",
+    "company_name": "Simon Property Group, Inc.",
+    "sector": "Real Estate",
+    "price": 194.8300018310547,
+    "pe_ratio": 13.759181,
+    "min_price": 193.4499969482422,
+    "max_price": 200.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 53,
+  "fields": {
+    "symbol": "PSA",
+    "company_name": "Public Storage",
+    "sector": "Real Estate",
+    "price": 308.1300048828125,
+    "pe_ratio": 34.236668,
+    "min_price": 301.3999938964844,
+    "max_price": 309.19000244140625
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 54,
+  "fields": {
+    "symbol": "DLR",
+    "company_name": "Digital Realty Trust, Inc.",
+    "sector": "Real Estate",
+    "price": 176.19000244140625,
+    "pe_ratio": 49.215084,
+    "min_price": 175.97999572753906,
+    "max_price": 182.13999938964844
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 55,
+  "fields": {
+    "symbol": "WELL",
+    "company_name": "Welltower Inc.",
+    "sector": "Real Estate",
+    "price": 204.2899932861328,
+    "pe_ratio": 142.86014,
+    "min_price": 200.4199981689453,
+    "max_price": 205.30999755859375
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 56,
+  "fields": {
+    "symbol": "AVB",
+    "company_name": "AvalonBay Communities, Inc.",
+    "sector": "Real Estate",
+    "price": 177.88999938964844,
+    "pe_ratio": 24.039188,
+    "min_price": 174.97999572753906,
+    "max_price": 178.2100067138672
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 57,
+  "fields": {
+    "symbol": "PG",
+    "company_name": "The Procter & Gamble Company",
+    "sector": "Consumer Goods",
+    "price": 153.6300048828125,
+    "pe_ratio": 22.79377,
+    "min_price": 151.88999938964844,
+    "max_price": 154.42999267578125
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 58,
+  "fields": {
+    "symbol": "KO",
+    "company_name": "The Coca-Cola Company",
+    "sector": "Consumer Goods",
+    "price": 77.04000091552734,
+    "pe_ratio": 25.342106,
+    "min_price": 76.3499984741211,
+    "max_price": 77.19000244140625
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 59,
+  "fields": {
+    "symbol": "PEP",
+    "company_name": "PepsiCo, Inc.",
+    "sector": "Consumer Goods",
+    "price": 159.42999267578125,
+    "pe_ratio": 26.616026,
+    "min_price": 156.08999633789062,
+    "max_price": 159.52999877929688
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 60,
+  "fields": {
+    "symbol": "PM",
+    "company_name": "Philip Morris International Inc.",
+    "sector": "Consumer Goods",
+    "price": 169.97999572753906,
+    "pe_ratio": 23.413221,
+    "min_price": 166.89999389648438,
+    "max_price": 170.0800018310547
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 61,
+  "fields": {
+    "symbol": "MO",
+    "company_name": "Altria Group, Inc.",
+    "sector": "Consumer Goods",
+    "price": 66.51000213623047,
+    "pe_ratio": 16.143206,
+    "min_price": 65.94999694824219,
+    "max_price": 66.98999786376953
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 62,
+  "fields": {
+    "symbol": "CL",
+    "company_name": "Colgate-Palmolive Company",
+    "sector": "Consumer Goods",
+    "price": 93.55999755859375,
+    "pe_ratio": 35.574142,
+    "min_price": 91.41999816894531,
+    "max_price": 93.5999984741211
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 63,
+  "fields": {
+    "symbol": "KMB",
+    "company_name": "Kimberly-Clark Corporation",
+    "sector": "Consumer Goods",
+    "price": 104.58000183105469,
+    "pe_ratio": 21.518518,
+    "min_price": 101.69000244140625,
+    "max_price": 104.81999969482422
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 64,
+  "fields": {
+    "symbol": "MDLZ",
+    "company_name": "Mondelez International, Inc.",
+    "sector": "Consumer Goods",
+    "price": 58.400001525878906,
+    "pe_ratio": 30.899471,
+    "min_price": 57.349998474121094,
+    "max_price": 58.59000015258789
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 65,
+  "fields": {
+    "symbol": "GIS",
+    "company_name": "General Mills, Inc.",
+    "sector": "Consumer Goods",
+    "price": 44.290000915527344,
+    "pe_ratio": 9.524732,
+    "min_price": 43.06999969482422,
+    "max_price": 44.439998626708984
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 66,
+  "fields": {
+    "symbol": "VLO",
+    "company_name": "Valero Energy Corporation",
+    "sector": "Energy",
+    "price": 224.6300048828125,
+    "pe_ratio": 29.673712,
+    "min_price": 221.32000732421875,
+    "max_price": 230.49000549316406
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 67,
+  "fields": {
+    "symbol": "OXY",
+    "company_name": "Occidental Petroleum Corporation",
+    "sector": "Energy",
+    "price": 54.189998626708984,
+    "pe_ratio": 40.14074,
+    "min_price": 53.29999923706055,
+    "max_price": 55.16999816894531
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 68,
+  "fields": {
+    "symbol": "KMI",
+    "company_name": "Kinder Morgan, Inc.",
+    "sector": "Energy",
+    "price": 33.58000183105469,
+    "pe_ratio": 24.51095,
+    "min_price": 33.2400016784668,
+    "max_price": 33.66999816894531
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 69,
+  "fields": {
+    "symbol": "XOM",
+    "company_name": "Exxon Mobil Corporation",
+    "sector": "Energy",
+    "price": 151.2100067138672,
+    "pe_ratio": 22.568659,
+    "min_price": 149.9600067138672,
+    "max_price": 153.8000030517578
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 70,
+  "fields": {
+    "symbol": "CVX",
+    "company_name": "Chevron Corporation",
+    "sector": "Energy",
+    "price": 189.94000244140625,
+    "pe_ratio": 28.648567,
+    "min_price": 188.1199951171875,
+    "max_price": 192.41000366210938
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 71,
+  "fields": {
+    "symbol": "COP",
+    "company_name": "ConocoPhillips",
+    "sector": "Energy",
+    "price": 117.06999969482422,
+    "pe_ratio": 18.43622,
+    "min_price": 116.5999984741211,
+    "max_price": 119.4800033569336
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 72,
+  "fields": {
+    "symbol": "SLB",
+    "company_name": "SLB N.V.",
+    "sector": "Energy",
+    "price": 46.900001525878906,
+    "pe_ratio": 19.957449,
+    "min_price": 46.400001525878906,
+    "max_price": 47.65999984741211
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 73,
+  "fields": {
+    "symbol": "EOG",
+    "company_name": "EOG Resources, Inc.",
+    "sector": "Energy",
+    "price": 131.41000366210938,
+    "pe_ratio": 14.408992,
+    "min_price": 130.77999877929688,
+    "max_price": 134.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 74,
+  "fields": {
+    "symbol": "MPC",
+    "company_name": "Marathon Petroleum Corporation",
+    "sector": "Energy",
+    "price": 221.27999877929688,
+    "pe_ratio": 16.750946,
+    "min_price": 214.25,
+    "max_price": 221.42999267578125
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 75,
+  "fields": {
+    "symbol": "PSX",
+    "company_name": "Phillips 66",
+    "sector": "Energy",
+    "price": 165.9600067138672,
+    "pe_ratio": 15.380909,
+    "min_price": 161.60000610351562,
+    "max_price": 167.82000732421875
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 76,
+  "fields": {
+    "symbol": "GE",
+    "company_name": "GE Aerospace",
+    "sector": "Industrials",
+    "price": 323.1099853515625,
+    "pe_ratio": 40.137886,
+    "min_price": 317.6099853515625,
+    "max_price": 324.5400085449219
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 77,
+  "fields": {
+    "symbol": "CAT",
+    "company_name": "Caterpillar Inc.",
+    "sector": "Industrials",
+    "price": 680.9000244140625,
+    "pe_ratio": 36.23736,
+    "min_price": 675.0700073242188,
+    "max_price": 696.3300170898438
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 78,
+  "fields": {
+    "symbol": "HON",
+    "company_name": "Honeywell International Inc.",
+    "sector": "Industrials",
+    "price": 235.2899932861328,
+    "pe_ratio": 31.040897,
+    "min_price": 234.1199951171875,
+    "max_price": 236.9600067138672
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 79,
+  "fields": {
+    "symbol": "BA",
+    "company_name": "The Boeing Company",
+    "sector": "Industrials",
+    "price": 231.11000061035156,
+    "pe_ratio": 93.5668,
+    "min_price": 218.63999938964844,
+    "max_price": 231.9600067138672
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 80,
+  "fields": {
+    "symbol": "UNP",
+    "company_name": "Union Pacific Corporation",
+    "sector": "Industrials",
+    "price": 254.11000061035156,
+    "pe_ratio": 21.228905,
+    "min_price": 252.0,
+    "max_price": 259.8999938964844
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 81,
+  "fields": {
+    "symbol": "UPS",
+    "company_name": "United Parcel Service, Inc.",
+    "sector": "Industrials",
+    "price": 102.36000061035156,
+    "pe_ratio": 15.603659,
+    "min_price": 99.41000366210938,
+    "max_price": 102.41999816894531
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 82,
+  "fields": {
+    "symbol": "LMT",
+    "company_name": "Lockheed Martin Corporation",
+    "sector": "Industrials",
+    "price": 671.77001953125,
+    "pe_ratio": 31.245117,
+    "min_price": 656.4000244140625,
+    "max_price": 672.8599853515625
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 83,
+  "fields": {
+    "symbol": "DE",
+    "company_name": "Deere & Company",
+    "sector": "Industrials",
+    "price": 589.77001953125,
+    "pe_ratio": 33.22648,
+    "min_price": 577.6300048828125,
+    "max_price": 589.8499755859375
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 84,
+  "fields": {
+    "symbol": "RTX",
+    "company_name": "RTX Corporation",
+    "sector": "Industrials",
+    "price": 209.75999450683594,
+    "pe_ratio": 42.37576,
+    "min_price": 203.63999938964844,
+    "max_price": 209.9499969482422
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 85,
+  "fields": {
+    "symbol": "MMM",
+    "company_name": "3M Company",
+    "sector": "Industrials",
+    "price": 153.41000366210938,
+    "pe_ratio": 25.568335,
+    "min_price": 151.75999450683594,
+    "max_price": 154.1199951171875
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 86,
+  "fields": {
+    "symbol": "SCHW",
+    "company_name": "The Charles Schwab Corporation",
+    "sector": "Banking",
+    "price": 95.2300033569336,
+    "pe_ratio": 20.47957,
+    "min_price": 92.55000305175781,
+    "max_price": 95.2699966430664
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 87,
+  "fields": {
+    "symbol": "BK",
+    "company_name": "The Bank of New York Mellon Corporation",
+    "sector": "Banking",
+    "price": 115.2300033569336,
+    "pe_ratio": 15.571622,
+    "min_price": 112.1500015258789,
+    "max_price": 115.29000091552734
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 88,
+  "fields": {
+    "symbol": "BMY",
+    "company_name": "Bristol-Myers Squibb Company",
+    "sector": "Healthcare",
+    "price": 60.290000915527344,
+    "pe_ratio": 17.424856,
+    "min_price": 59.45000076293945,
+    "max_price": 60.43000030517578
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 89,
+  "fields": {
+    "symbol": "AMGN",
+    "company_name": "Amgen Inc.",
+    "sector": "Healthcare",
+    "price": 369.5299987792969,
+    "pe_ratio": 25.968378,
+    "min_price": 361.7099914550781,
+    "max_price": 369.760009765625
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 90,
+  "fields": {
+    "symbol": "RELIANCE.NS",
+    "company_name": "Reliance Industries Limited",
+    "sector": "Energy",
+    "price": 1400.0,
+    "pe_ratio": 22.751505,
+    "min_price": 1370.0,
+    "max_price": 1413.300048828125
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 91,
+  "fields": {
+    "symbol": "ONGC.NS",
+    "company_name": "Oil and Natural Gas Corporation Limited",
+    "sector": "Energy",
+    "price": 270.25,
+    "pe_ratio": 8.936839,
+    "min_price": 268.75,
+    "max_price": 289.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 92,
+  "fields": {
+    "symbol": "COALINDIA.NS",
+    "company_name": "Coal India Limited",
+    "sector": "Energy",
+    "price": 437.1000061035156,
+    "pe_ratio": 9.021672,
+    "min_price": 434.79998779296875,
+    "max_price": 447.20001220703125
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 93,
+  "fields": {
+    "symbol": "BPCL.NS",
+    "company_name": "Bharat Petroleum Corporation Limited",
+    "sector": "Energy",
+    "price": 333.8500061035156,
+    "pe_ratio": 5.796007,
+    "min_price": 322.79998779296875,
+    "max_price": 341.45001220703125
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 94,
+  "fields": {
+    "symbol": "IOC.NS",
+    "company_name": "Indian Oil Corporation Limited",
+    "sector": "Energy",
+    "price": 160.10000610351562,
+    "pe_ratio": 6.1671805,
+    "min_price": 156.3000030517578,
+    "max_price": 161.9499969482422
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 95,
+  "fields": {
+    "symbol": "INFY.NS",
+    "company_name": "Infosys Limited",
+    "sector": "Technology",
+    "price": 1299.4000244140625,
+    "pe_ratio": 18.322054,
+    "min_price": 1282.5,
+    "max_price": 1304.800048828125
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 96,
+  "fields": {
+    "symbol": "TCS.NS",
+    "company_name": "Tata Consultancy Services Limited",
+    "sector": "Technology",
+    "price": 2524.0,
+    "pe_ratio": 19.125559,
+    "min_price": 2505.0,
+    "max_price": 2560.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 97,
+  "fields": {
+    "symbol": "WIPRO.NS",
+    "company_name": "Wipro Limited",
+    "sector": "Technology",
+    "price": 196.8300018310547,
+    "pe_ratio": 15.596672,
+    "min_price": 193.02999877929688,
+    "max_price": 197.5
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 98,
+  "fields": {
+    "symbol": "HCLTECH.NS",
+    "company_name": "HCL Technologies Limited",
+    "sector": "Technology",
+    "price": 1354.800048828125,
+    "pe_ratio": 22.34169,
+    "min_price": 1328.0,
+    "max_price": 1372.699951171875
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 99,
+  "fields": {
+    "symbol": "TECHM.NS",
+    "company_name": "Tech Mahindra Limited",
+    "sector": "Technology",
+    "price": 1323.0,
+    "pe_ratio": 25.408104,
+    "min_price": 1304.0999755859375,
+    "max_price": 1335.699951171875
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 100,
+  "fields": {
+    "symbol": "SUNPHARMA.NS",
+    "company_name": "Sun Pharmaceutical Industries Limited",
+    "sector": "Healthcare",
+    "price": 1793.199951171875,
+    "pe_ratio": 39.393673,
+    "min_price": 1770.0,
+    "max_price": 1798.800048828125
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 101,
+  "fields": {
+    "symbol": "DRREDDY.NS",
+    "company_name": "Dr. Reddy's Laboratories Limited",
+    "sector": "Healthcare",
+    "price": 1290.300048828125,
+    "pe_ratio": 18.994555,
+    "min_price": 1273.5999755859375,
+    "max_price": 1294.9000244140625
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 102,
+  "fields": {
+    "symbol": "CIPLA.NS",
+    "company_name": "Cipla Limited",
+    "sector": "Healthcare",
+    "price": 1322.0,
+    "pe_ratio": 23.489695,
+    "min_price": 1292.699951171875,
+    "max_price": 1322.4000244140625
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 103,
+  "fields": {
+    "symbol": "DIVISLAB.NS",
+    "company_name": "Divi's Laboratories Limited",
+    "sector": "Healthcare",
+    "price": 6324.0,
+    "pe_ratio": 67.51361,
+    "min_price": 6173.5,
+    "max_price": 6324.5
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 104,
+  "fields": {
+    "symbol": "APOLLOHOSP.NS",
+    "company_name": "Apollo Hospitals Enterprise Limited",
+    "sector": "Healthcare",
+    "price": 7714.5,
+    "pe_ratio": 61.646957,
+    "min_price": 7556.0,
+    "max_price": 7714.5
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 105,
+  "fields": {
+    "symbol": "HDFCBANK.NS",
+    "company_name": "HDFC Bank Limited",
+    "sector": "Banking",
+    "price": 836.75,
+    "pe_ratio": 18.66912,
+    "min_price": 821.5,
+    "max_price": 841.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 106,
+  "fields": {
+    "symbol": "ICICIBANK.NS",
+    "company_name": "ICICI Bank Limited",
+    "sector": "Banking",
+    "price": 1276.4000244140625,
+    "pe_ratio": 17.414381,
+    "min_price": 1251.0999755859375,
+    "max_price": 1282.699951171875
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 107,
+  "fields": {
+    "symbol": "SBIN.NS",
+    "company_name": "State Bank of India",
+    "sector": "Banking",
+    "price": 1082.9000244140625,
+    "pe_ratio": 11.783461,
+    "min_price": 1064.300048828125,
+    "max_price": 1115.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 108,
+  "fields": {
+    "symbol": "AXISBANK.NS",
+    "company_name": "Axis Bank Limited",
+    "sector": "Banking",
+    "price": 1282.9000244140625,
+    "pe_ratio": 15.234533,
+    "min_price": 1260.800048828125,
+    "max_price": 1287.4000244140625
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 109,
+  "fields": {
+    "symbol": "KOTAKBANK.NS",
+    "company_name": "Kotak Mahindra Bank Limited",
+    "sector": "Banking",
+    "price": 387.95001220703125,
+    "pe_ratio": 20.5156,
+    "min_price": 386.6499938964844,
+    "max_price": 393.8500061035156
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 110,
+  "fields": {
+    "symbol": "ITC.NS",
+    "company_name": "ITC Limited",
+    "sector": "Consumer Goods",
+    "price": 305.20001220703125,
+    "pe_ratio": 18.769989,
+    "min_price": 303.6000061035156,
+    "max_price": 307.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 111,
+  "fields": {
+    "symbol": "HINDUNILVR.NS",
+    "company_name": "Hindustan Unilever Limited",
+    "sector": "Consumer Goods",
+    "price": 2191.300048828125,
+    "pe_ratio": 51.007915,
+    "min_price": 2170.39990234375,
+    "max_price": 2200.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 112,
+  "fields": {
+    "symbol": "NESTLEIND.NS",
+    "company_name": "NestlΘ India Limited",
+    "sector": "Consumer Goods",
+    "price": 1228.699951171875,
+    "pe_ratio": 72.66115,
+    "min_price": 1217.4000244140625,
+    "max_price": 1242.5999755859375
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 113,
+  "fields": {
+    "symbol": "BRITANNIA.NS",
+    "company_name": "Britannia Industries Limited",
+    "sector": "Consumer Goods",
+    "price": 5885.5,
+    "pe_ratio": 58.556362,
+    "min_price": 5815.5,
+    "max_price": 5932.5
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 114,
+  "fields": {
+    "symbol": "DABUR.NS",
+    "company_name": "Dabur India Limited",
+    "sector": "Consumer Goods",
+    "price": 466.25,
+    "pe_ratio": 44.874878,
+    "min_price": 464.20001220703125,
+    "max_price": 473.04998779296875
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 115,
+  "fields": {
+    "symbol": "LT.NS",
+    "company_name": "Larsen & Toubro Limited",
+    "sector": "Industrials",
+    "price": 3799.0,
+    "pe_ratio": 29.688208,
+    "min_price": 3743.0,
+    "max_price": 3850.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 116,
+  "fields": {
+    "symbol": "SIEMENS.NS",
+    "company_name": "Siemens Limited",
+    "sector": "Industrials",
+    "price": 3197.800048828125,
+    "pe_ratio": 67.464134,
+    "min_price": 3130.0,
+    "max_price": 3217.60009765625
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 117,
+  "fields": {
+    "symbol": "BEL.NS",
+    "company_name": "Bharat Electronics Limited",
+    "sector": "Industrials",
+    "price": 453.29998779296875,
+    "pe_ratio": 55.619633,
+    "min_price": 450.0,
+    "max_price": 470.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 118,
+  "fields": {
+    "symbol": "HAL.NS",
+    "company_name": "Hindustan Aeronautics Limited",
+    "sector": "Industrials",
+    "price": 3991.0,
+    "pe_ratio": 29.966963,
+    "min_price": 3925.0,
+    "max_price": 4023.699951171875
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 119,
+  "fields": {
+    "symbol": "ADANIPORTS.NS",
+    "company_name": "Adani Ports and Special Economic Zone Limited",
+    "sector": "Industrials",
+    "price": 1419.0999755859375,
+    "pe_ratio": 24.564651,
+    "min_price": 1405.0,
+    "max_price": 1436.0999755859375
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 120,
+  "fields": {
+    "symbol": "BHARTIARTL.NS",
+    "company_name": "Bharti Airtel Limited",
+    "sector": "Telecommunications",
+    "price": 1861.4000244140625,
+    "pe_ratio": 36.85211,
+    "min_price": 1818.0999755859375,
+    "max_price": 1864.9000244140625
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 121,
+  "fields": {
+    "symbol": "INDUSTOWER.NS",
+    "company_name": "Indus Towers Limited",
+    "sector": "Telecommunications",
+    "price": 438.45001220703125,
+    "pe_ratio": 16.190916,
+    "min_price": 433.54998779296875,
+    "max_price": 444.95001220703125
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 122,
+  "fields": {
+    "symbol": "TATACOMM.NS",
+    "company_name": "Tata Communications Limited",
+    "sector": "Telecommunications",
+    "price": 1471.0999755859375,
+    "pe_ratio": 27.239082,
+    "min_price": 1401.9000244140625,
+    "max_price": 1485.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 123,
+  "fields": {
+    "symbol": "MTNL.NS",
+    "company_name": "Mahanagar Telephone Nigam Limited",
+    "sector": "Telecommunications",
+    "price": 25.450000762939453,
+    "pe_ratio": null,
+    "min_price": 25.299999237060547,
+    "max_price": 26.510000228881836
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 124,
+  "fields": {
+    "symbol": "RAILTEL.NS",
+    "company_name": "RailTel Corporation of India Limited",
+    "sector": "Telecommunications",
+    "price": 279.6000061035156,
+    "pe_ratio": 28.27098,
+    "min_price": 275.45001220703125,
+    "max_price": 289.8999938964844
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 125,
+  "fields": {
+    "symbol": "VOD.L",
+    "company_name": "Vodafone Group Public Limited Company",
+    "sector": "Telecommunications",
+    "price": 108.30000305175781,
+    "pe_ratio": null,
+    "min_price": 106.6500015258789,
+    "max_price": 110.3499984741211
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 126,
+  "fields": {
+    "symbol": "BT-A.L",
+    "company_name": "BT Group plc",
+    "sector": "Telecommunications",
+    "price": 206.39999389648438,
+    "pe_ratio": 20.64,
+    "min_price": 204.39999389648438,
+    "max_price": 208.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 127,
+  "fields": {
+    "symbol": "MONY.L",
+    "company_name": "MONY Group plc",
+    "sector": "Telecommunications",
+    "price": 172.89999389648438,
+    "pe_ratio": 11.526666,
+    "min_price": 164.10000610351562,
+    "max_price": 173.10000610351562
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 128,
+  "fields": {
+    "symbol": "FERG.L",
+    "company_name": "Ferguson Enterprises Inc.",
+    "sector": "Telecommunications",
+    "price": 17440.0,
+    "pe_ratio": 22.947369,
+    "min_price": 17230.0,
+    "max_price": 17980.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 129,
+  "fields": {
+    "symbol": "KGF.L",
+    "company_name": "Kingfisher plc",
+    "sector": "Telecommunications",
+    "price": 325.70001220703125,
+    "pe_ratio": 32.57,
+    "min_price": 322.70001220703125,
+    "max_price": 345.1000061035156
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 130,
+  "fields": {
+    "symbol": "NTPC.NS",
+    "company_name": "NTPC Limited",
+    "sector": "Utilities",
+    "price": 373.3500061035156,
+    "pe_ratio": 20.649889,
+    "min_price": 372.25,
+    "max_price": 379.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 131,
+  "fields": {
+    "symbol": "POWERGRID.NS",
+    "company_name": "Power Grid Corporation of India Limited",
+    "sector": "Utilities",
+    "price": 293.1000061035156,
+    "pe_ratio": 18.800514,
+    "min_price": 285.5,
+    "max_price": 294.3999938964844
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 132,
+  "fields": {
+    "symbol": "TATAPOWER.NS",
+    "company_name": "Tata Power Company Limited",
+    "sector": "Utilities",
+    "price": 369.79998779296875,
+    "pe_ratio": 31.15417,
+    "min_price": 365.1499938964844,
+    "max_price": 372.3999938964844
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 133,
+  "fields": {
+    "symbol": "ADANIPOWER.NS",
+    "company_name": "Adani Power Limited",
+    "sector": "Utilities",
+    "price": 139.11000061035156,
+    "pe_ratio": 23.698467,
+    "min_price": 134.86000061035156,
+    "max_price": 139.3000030517578
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 134,
+  "fields": {
+    "symbol": "NHPC.NS",
+    "company_name": "NHPC Limited",
+    "sector": "Utilities",
+    "price": 72.80000305175781,
+    "pe_ratio": 46.66667,
+    "min_price": 72.08999633789062,
+    "max_price": 73.25
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 135,
+  "fields": {
+    "symbol": "NG.L",
+    "company_name": "National Grid plc",
+    "sector": "Utilities",
+    "price": 1337.5,
+    "pe_ratio": 22.291666,
+    "min_price": 1331.5,
+    "max_price": 1359.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 136,
+  "fields": {
+    "symbol": "SSE.L",
+    "company_name": "SSE plc",
+    "sector": "Utilities",
+    "price": 2623.0,
+    "pe_ratio": 30.149426,
+    "min_price": 2600.0,
+    "max_price": 2670.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 137,
+  "fields": {
+    "symbol": "UU.L",
+    "company_name": "United Utilities Group PLC",
+    "sector": "Utilities",
+    "price": 1338.0,
+    "pe_ratio": 22.677967,
+    "min_price": 1335.5,
+    "max_price": 1372.5
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 138,
+  "fields": {
+    "symbol": "SVT.L",
+    "company_name": "Severn Trent PLC",
+    "sector": "Utilities",
+    "price": 3126.0,
+    "pe_ratio": 29.771431,
+    "min_price": 3126.0,
+    "max_price": 3215.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 139,
+  "fields": {
+    "symbol": "PNN.L",
+    "company_name": "Pennon Group Plc",
+    "sector": "Utilities",
+    "price": 547.5,
+    "pe_ratio": 109.5,
+    "min_price": 547.5,
+    "max_price": 571.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 140,
+  "fields": {
+    "symbol": "DLF.NS",
+    "company_name": "DLF Limited",
+    "sector": "Real Estate",
+    "price": 566.8499755859375,
+    "pe_ratio": 31.667597,
+    "min_price": 553.5499877929688,
+    "max_price": 572.4000244140625
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 141,
+  "fields": {
+    "symbol": "GODREJPROP.NS",
+    "company_name": "Godrej Properties Limited",
+    "sector": "Real Estate",
+    "price": 1631.0,
+    "pe_ratio": 31.054836,
+    "min_price": 1590.5,
+    "max_price": 1643.800048828125
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 142,
+  "fields": {
+    "symbol": "OBEROIRLTY.NS",
+    "company_name": "Oberoi Realty Limited",
+    "sector": "Real Estate",
+    "price": 1452.4000244140625,
+    "pe_ratio": 23.6201,
+    "min_price": 1430.0,
+    "max_price": 1460.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 143,
+  "fields": {
+    "symbol": "PRESTIGE.NS",
+    "company_name": "Prestige Estates Projects Limited",
+    "sector": "Real Estate",
+    "price": 1291.5999755859375,
+    "pe_ratio": 57.55793,
+    "min_price": 1281.0,
+    "max_price": 1324.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 144,
+  "fields": {
+    "symbol": "PHOENIXLTD.NS",
+    "company_name": "The Phoenix Mills Limited",
+    "sector": "Real Estate",
+    "price": 1585.199951171875,
+    "pe_ratio": 52.02494,
+    "min_price": 1557.9000244140625,
+    "max_price": 1592.9000244140625
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 145,
+  "fields": {
+    "symbol": "LAND.L",
+    "company_name": "Land Securities Group Plc",
+    "sector": "Real Estate",
+    "price": 608.5,
+    "pe_ratio": 18.439394,
+    "min_price": 606.0,
+    "max_price": 625.0999755859375
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 146,
+  "fields": {
+    "symbol": "BLND.L",
+    "company_name": "British Land Company PLC",
+    "sector": "Real Estate",
+    "price": 380.3999938964844,
+    "pe_ratio": 8.453333,
+    "min_price": 378.2359924316406,
+    "max_price": 391.20001220703125
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 147,
+  "fields": {
+    "symbol": "BBOX.L",
+    "company_name": "Tritax Big Box Ord",
+    "sector": "Real Estate",
+    "price": 160.5,
+    "pe_ratio": 9.441176,
+    "min_price": 160.39999389648438,
+    "max_price": 165.39999389648438
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 148,
+  "fields": {
+    "symbol": "PSN.L",
+    "company_name": "Persimmon Plc",
+    "sector": "Real Estate",
+    "price": 1294.5,
+    "pe_ratio": 16.386076,
+    "min_price": 1265.5,
+    "max_price": 1334.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 149,
+  "fields": {
+    "symbol": "TW.L",
+    "company_name": "Taylor Wimpey plc",
+    "sector": "Real Estate",
+    "price": 98.44000244140625,
+    "pe_ratio": 49.22,
+    "min_price": 98.05000305175781,
+    "max_price": 102.0999984741211
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 150,
+  "fields": {
+    "symbol": "SHEL.L",
+    "company_name": "Shell plc",
+    "sector": "Energy",
+    "price": 3133.0,
+    "pe_ratio": 13.924444,
+    "min_price": 3096.0,
+    "max_price": 3156.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 151,
+  "fields": {
+    "symbol": "BP.L",
+    "company_name": "BP p.l.c.",
+    "sector": "Energy",
+    "price": 498.8999938964844,
+    "pe_ratio": Infinity,
+    "min_price": 490.70001220703125,
+    "max_price": 504.79998779296875
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 152,
+  "fields": {
+    "symbol": "ENOG.L",
+    "company_name": "Energean plc",
+    "sector": "Energy",
+    "price": 891.5,
+    "pe_ratio": 16.209091,
+    "min_price": 871.0,
+    "max_price": 906.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 153,
+  "fields": {
+    "symbol": "HBR.L",
+    "company_name": "Harbour Energy plc",
+    "sector": "Energy",
+    "price": 288.6000061035156,
+    "pe_ratio": null,
+    "min_price": 274.6000061035156,
+    "max_price": 293.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 154,
+  "fields": {
+    "symbol": "SEPL.L",
+    "company_name": "Seplat Energy Plc",
+    "sector": "Energy",
+    "price": 452.0,
+    "pe_ratio": 22.6,
+    "min_price": 429.5,
+    "max_price": 460.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 155,
+  "fields": {
+    "symbol": "HSBA.L",
+    "company_name": "HSBC Holdings plc",
+    "sector": "Banking",
+    "price": 1245.0,
+    "pe_ratio": 13.833333,
+    "min_price": 1237.06005859375,
+    "max_price": 1293.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 156,
+  "fields": {
+    "symbol": "BARC.L",
+    "company_name": "Barclays PLC",
+    "sector": "Banking",
+    "price": 404.1499938964844,
+    "pe_ratio": 9.62262,
+    "min_price": 400.54998779296875,
+    "max_price": 422.09600830078125
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 157,
+  "fields": {
+    "symbol": "LLOY.L",
+    "company_name": "Lloyds Banking Group plc",
+    "sector": "Banking",
+    "price": 95.41999816894531,
+    "pe_ratio": 13.631428,
+    "min_price": 94.49099731445312,
+    "max_price": 98.19999694824219
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 158,
+  "fields": {
+    "symbol": "STAN.L",
+    "company_name": "Standard Chartered PLC",
+    "sector": "Banking",
+    "price": 1640.0,
+    "pe_ratio": 11.549295,
+    "min_price": 1633.0,
+    "max_price": 1707.949951171875
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 159,
+  "fields": {
+    "symbol": "NWG.L",
+    "company_name": "NatWest Group plc",
+    "sector": "Banking",
+    "price": 575.5999755859375,
+    "pe_ratio": 8.591043,
+    "min_price": 567.7999877929688,
+    "max_price": 591.0260009765625
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 160,
+  "fields": {
+    "symbol": "AZN.L",
+    "company_name": "AstraZeneca PLC",
+    "sector": "Healthcare",
+    "price": 14500.0,
+    "pe_ratio": 29.591837,
+    "min_price": 14440.0,
+    "max_price": 14908.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 161,
+  "fields": {
+    "symbol": "GSK.L",
+    "company_name": "GSK plc",
+    "sector": "Healthcare",
+    "price": 2038.0,
+    "pe_ratio": 14.66187,
+    "min_price": 2028.0,
+    "max_price": 2080.35791015625
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 162,
+  "fields": {
+    "symbol": "HIK.L",
+    "company_name": "Hikma Pharmaceuticals PLC",
+    "sector": "Healthcare",
+    "price": 1209.0,
+    "pe_ratio": 8.889706,
+    "min_price": 1205.0,
+    "max_price": 1234.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 163,
+  "fields": {
+    "symbol": "SN.L",
+    "company_name": "Smith & Nephew plc",
+    "sector": "Healthcare",
+    "price": 1284.5,
+    "pe_ratio": 30.583336,
+    "min_price": 1276.5,
+    "max_price": 1310.5
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 164,
+  "fields": {
+    "symbol": "CTEC.L",
+    "company_name": "Convatec Group PLC",
+    "sector": "Healthcare",
+    "price": 243.8000030517578,
+    "pe_ratio": 40.633335,
+    "min_price": 243.8000030517578,
+    "max_price": 250.1999969482422
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 165,
+  "fields": {
+    "symbol": "SGE.L",
+    "company_name": "The Sage Group plc",
+    "sector": "Technology",
+    "price": 841.7999877929688,
+    "pe_ratio": 22.751352,
+    "min_price": 829.5999755859375,
+    "max_price": 848.0
+  }
+},
+{
+  "model": "portfolio.stock",
+  "pk": 166,
+  "fields": {
+    "symbol": "CCC.L",
+    "company_name": "Computacenter plc",
+    "sector": "Technology",
+    "price": 3150.0,
+    "pe_ratio": 21.575342,
+    "min_price": 3126.0,
+    "max_price": 3214.0
+  }
+}
+]

@@ -6,6 +6,7 @@ from typing import Iterable
 
 import numpy as np
 import yfinance as yf
+yf.set_tz_cache_location("/tmp/yfinance_cache")
 from django.core.cache import cache
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
@@ -152,7 +153,7 @@ COUNTRY_SECTOR_SYMBOLS = {
 }
 DEFAULT_YFINANCE_SYMBOLS = [symbol for symbols in SECTOR_SYMBOLS.values() for symbol in symbols]
 
-SYNC_TTL_SECONDS = 60
+SYNC_TTL_SECONDS = 300
 
 
 def get_symbols_for_sector(sector: str | None, country: str | None = None) -> list[str]:

@@ -1,16 +1,12 @@
 import axios from "axios";
-
 const api = axios.create({
-  baseURL: "http://127.0.0.1:8000/api",
+  baseURL: "https://portanalysis.duckdns.org/api",
 });
-
 api.interceptors.request.use((config) => {
-  const useJwt = localStorage.getItem("use_jwt_auth") === "true";
   const token = localStorage.getItem("access_token");
-  if (useJwt && token) {
+  if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
-
 export default api;

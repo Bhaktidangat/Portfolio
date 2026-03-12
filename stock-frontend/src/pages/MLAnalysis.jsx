@@ -53,11 +53,13 @@ export default function MLAnalysis() {
 
   useEffect(() => {
     const run = async () => {
-      const symbols = getPortfolioSymbols();
-      if (!symbols.length) {
-        setSummaryLoading(false);
-        return;
-      }
+      let symbols = [];
+try {
+  const portfolioRes = await api.get("/portfolio/");
+  const stocks = portfolioRes.data?.stocks || [];
+  symbols = stocks.map((item) => String(item.stock?.symbol || "").trim().toUpperCase()).filter(Boolean);
+} catch { setSummaryLoading(false); return; }
+if (!symbols.length) { setSummaryLoading(false); return; }
       setSummaryLoading(true);
       try {
         const response = await api.get("/ml/summary/", {
